@@ -174,16 +174,16 @@ git clone <a target="_blank" href="git clone https://gitee.com/sinaC/youliao.git
 ### 2.2 <a name="2.2">订单管理扫码付</a>
 >1.基于支付案列的扫码付已经完善接入,个人已自测。更多支付类型后期再不断更新。案列预览。
 <table>
-        <tr>
-            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_111445.jpg"/></td>
-            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_142521.jpg"/></td>
-            td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_112743.jpg"/></td>
-        </tr>
-        <tr>
-            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_113017.jpg"/></td>
-            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_112848.jpg"/></td>
-            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_112947.jpg"/></td>
-        </tr>
+       <tr>
+           <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_111445.jpg"/></td>
+           <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_142521.jpg"/></td>
+           <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_112743.jpg"/></td>
+       </tr>
+       <tr>
+           <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_113017.jpg"/></td>
+           <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_112848.jpg"/></td>
+           <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_112947.jpg"/></td>
+       </tr>
 </table>
 
 
