@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.FmsRefundOrderDao">
+
+
+    <update id="updateStatusByOutRefundNo" parameterType="com.seahorse.youliao.dao.entity.FmsRefundOrderDO">
+
+        update fms_refund_order
+        <include refid="update_sql"/>
+        where out_refund_no = #{outRefundNo}
+
+    </update>
+
+    <select id="getOrderRefundFeeById" resultType="java.math.BigDecimal">
+
+        select sum(refund_fee)
+        from fms_refund_order
+        where pay_id = #{payId}
+
+    </select>
+
+</mapper>

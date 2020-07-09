@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.ScheduleConfigDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.ScheduleConfigDO">
+        <result property="id" column="id"/>
+        <result property="jobName" column="job_name"/>
+        <result property="className" column="class_name"/>
+        <result property="method" column="method"/>
+        <result property="cron" column="cron"/>
+        <result property="enabled" column="enabled"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
+
+
+    <!-- 新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.ScheduleConfigDO" useGeneratedKeys="true" keyProperty="id">
+		insert into schedule_config(
+		    id,
+		    job_name,
+		    class_name,
+		    method,
+		    cron,
+		    enabled,
+		    create_time,
+		    create_by,
+		    update_time,
+		    update_by
+		)VALUES(
+			#{id},
+			#{jobName},
+			#{className},
+			#{method},
+			#{cron},
+			#{enabled},
+			#{createTime},
+			#{createBy},
+			#{updateTime},
+			#{updateBy}
+	    )
+	</insert>
+
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into schedule_config(
+		   id,
+		   job_name,
+		   class_name,
+		   method,
+		   cron,
+		   enabled,
+		   create_time,
+		   create_by,
+		   update_time,
+		   update_by
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.jobName},
+			#{item.className},
+			#{item.method},
+			#{item.cron},
+			#{item.enabled},
+			#{item.createTime},
+			#{item.createBy},
+			#{item.updateTime},
+			#{item.updateBy}
+		)
+		</foreach>
+	</insert>
+
+	<sql id="update_sql">
+        <set>
+			<if test="jobName != null">
+	    		job_name= #{jobName},
+			</if>
+			<if test="className != null">
+	    		class_name= #{className},
+			</if>
+			<if test="method != null">
+	    		method= #{method},
+			</if>
+			<if test="cron != null">
+	    		cron= #{cron},
+			</if>
+			<if test="enabled != null">
+	    		enabled= #{enabled},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+			<if test="updateTime != null">
+	    		update_time= #{updateTime},
+			</if>
+			<if test="updateBy != null">
+	    		update_by= #{updateBy},
+			</if>
+        </set>
+    </sql>
+
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.ScheduleConfigDO">
+        UPDATE schedule_config
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="item.jobName != null">
+				job_name= #{item.jobName},
+	        </if>
+			<if test="item.className != null">
+				class_name= #{item.className},
+	        </if>
+			<if test="item.method != null">
+				method= #{item.method},
+	        </if>
+			<if test="item.cron != null">
+				cron= #{item.cron},
+	        </if>
+			<if test="item.enabled != null">
+				enabled= #{item.enabled},
+	        </if>
+			<if test="item.createTime != null">
+				create_time= #{item.createTime},
+	        </if>
+			<if test="item.createBy != null">
+				create_by= #{item.createBy},
+	        </if>
+			<if test="item.updateTime != null">
+				update_time= #{item.updateTime},
+	        </if>
+			<if test="item.updateBy != null">
+				update_by= #{item.updateBy},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item">
+			update schedule_config
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.ScheduleConfigDO">
+		delete from schedule_config
+		<include refid="where_condition"/>
+	</delete>
+
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from schedule_config where id in
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="columns">
+		id,
+		job_name,
+		class_name,
+		method,
+		cron,
+		enabled,
+		create_time,
+		create_by,
+		update_time,
+		update_by
+	</sql>
+
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="jobName != null and jobName != ''">
+        		and job_name=#{jobName}
+    		</if>
+			<if test="className != null and className != ''">
+        		and class_name=#{className}
+    		</if>
+			<if test="method != null and method != ''">
+        		and method=#{method}
+    		</if>
+			<if test="cron != null and cron != ''">
+        		and cron=#{cron}
+    		</if>
+			<if test="enabled != null">
+        		and enabled=#{enabled}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+			<if test="updateTime != null">
+        		and update_time=#{updateTime}
+    		</if>
+			<if test="updateBy != null and updateBy != ''">
+        		and update_by=#{updateBy}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.ScheduleConfigDO">
+        SELECT
+        <include refid="columns"/>
+		FROM schedule_config
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.ScheduleConfigDO">
+        SELECT
+        <include refid="columns"/>
+		FROM schedule_config
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM schedule_config
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM schedule_config
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM schedule_config t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="jobName != null and jobName != ''">
+                and job_name=#{jobName}
+            </if>
+			<if test="className != null and className != ''">
+                and class_name=#{className}
+            </if>
+			<if test="method != null and method != ''">
+                and method=#{method}
+            </if>
+			<if test="cron != null and cron != ''">
+                and cron=#{cron}
+            </if>
+			<if test="enabled != null">
+                and enabled=#{enabled}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+			<if test="updateTime != null">
+                and update_time=#{updateTime}
+            </if>
+			<if test="updateBy != null and updateBy != ''">
+                and update_by=#{updateBy}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysDeptDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysDeptDO">
+        <result property="id" column="id"/>
+        <result property="pid" column="pid"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="sort" column="sort"/>
+        <result property="enabled" column="enabled"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysDeptDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_dept(
+		    id,
+		    pid,
+		    dept_name,
+		    sort,
+		    enabled,
+		    create_by,
+		    create_time,
+		    remark
+		)VALUES(
+			#{id},
+			#{pid},
+			#{deptName},
+			#{sort},
+			#{enabled},
+			#{createBy},
+			#{createTime},
+			#{remark}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_dept(
+		   id,
+		   pid,
+		   dept_name,
+		   sort,
+		   enabled,
+		   create_by,
+		   create_time,
+		   remark
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.pid},
+			#{item.deptName},
+			#{item.sort},
+			#{item.enabled},
+			#{item.createBy},
+			#{item.createTime},
+			#{item.remark}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="pid != null">
+	    		pid= #{pid},
+			</if>
+			<if test="deptName != null">
+	    		dept_name= #{deptName},
+			</if>
+			<if test="sort != null">
+	    		sort= #{sort},
+			</if>
+			<if test="enabled != null">
+	    		enabled= #{enabled},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="remark != null">
+				remark= #{remark},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysDeptDO">
+        UPDATE sys_dept
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.pid != null">
+				pid= #{entity.pid},
+	        </if>
+			<if test="entity.deptName != null">
+				dept_name= #{entity.deptName},
+	        </if>
+			<if test="entity.sort != null">
+				sort= #{entity.sort},
+	        </if>
+			<if test="entity.enabled != null">
+				enabled= #{entity.enabled},
+	        </if>
+			<if test="entity.createBy != null">
+				create_by= #{entity.createBy},
+	        </if>
+			<if test="entity.createTime != null">
+				create_time= #{entity.createTime},
+	        </if>
+			<if test="entity.remark != null">
+				remark= #{entity.remark},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update sys_dept
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysDeptDO">
+		delete from sys_dept
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_dept where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		pid,
+		dept_name,
+		sort,
+		enabled,
+		create_by,
+		create_time,
+		remark
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="pid != null">
+        		and pid=#{pid}
+    		</if>
+			<if test="deptName != null and deptName != ''">
+        		and dept_name like concat('%',#{deptName},'%')
+    		</if>
+			<if test="sort != null">
+        		and sort=#{sort}
+    		</if>
+			<if test="enabled != null">
+        		and enabled=#{enabled}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="remark != null">
+        		and remark=#{remark}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysDeptDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_dept
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysDeptDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_dept
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_dept
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_dept
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_dept t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="pid != null">
+                and pid=#{pid}
+            </if>
+			<if test="deptName != null and deptName != ''">
+                and dept_name=#{deptName}
+            </if>
+			<if test="sort != null">
+                and sort=#{sort}
+            </if>
+			<if test="enabled != null">
+                and enabled=#{enabled}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="remark != null">
+                and remark=#{remark}
+            </if>
+        </where>
+    </select>
+
+</mapper>

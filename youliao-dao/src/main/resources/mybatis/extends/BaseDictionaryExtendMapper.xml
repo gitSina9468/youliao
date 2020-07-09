@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.BaseDictionaryDao">
+
+
+    <!--根据类型code查询数据字典-->
+    <select id="listByType" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="columns"/>
+        FROM base_dictionary
+        where status = true and deleted = false
+        <if test="typeCode != null and typeCode!= ''">
+          and  type_code = #{typeCode}
+        </if>
+        order by sort
+    </select>
+
+    <!--根据code和类型查询是否存在-->
+    <select id="findIfExist" parameterType="com.seahorse.youliao.dao.BaseDictionaryDao" resultType="java.lang.Integer">
+
+        select count(1)
+        from base_dictionary
+        where
+        deleted = false
+        and type_code = #{typeCode}
+        and code = #{code}
+        <if test="id != null and id != ''">
+         and id != #{id}
+        </if>
+    </select>
+
+
+    <select id="getTypes" resultType="com.seahorse.youliao.dao.entity.BaseDictionaryDO">
+
+        select
+        type_code,
+        type_name
+        from base_dictionary
+        where status = true
+        and deleted = false
+        and system_status = false
+        group by type_code
+
+    </select>
+
+
+    <select id="getDictionaryByCode" resultMap="BaseResultMap">
+
+        select
+        <include refid="columns"></include>
+        from base_dictionary
+        where status = true
+        and deleted = false
+        and type_code = #{typeCode}
+        and code = #{code}
+
+    </select>
+
+    <select id="getSystemDictionaryByType" resultType="java.lang.Integer">
+
+        select
+        count(1)
+        from base_dictionary
+        where
+        deleted = false
+        and system_status = true
+        and type_code = #{typeCode}
+
+    </select>
+</mapper>

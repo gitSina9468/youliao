@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysUserDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysUserDO">
+        <result property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="birthday" column="birthday"/>
+        <result property="sex" column="sex"/>
+        <result property="avatar" column="avatar"/>
+        <result property="password" column="password"/>
+        <result property="enabled" column="enabled"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="jobId" column="job_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="loginIp" column="login_ip"/>
+        <result property="loginTime" column="login_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysUserDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user(
+		    id,
+		    user_name,
+		    nick_name,
+		    email,
+		    phone,
+		    birthday,
+		    sex,
+		    avatar,
+		    password,
+		    enabled,
+		    dept_id,
+		    job_id,
+		    create_by,
+		    create_time,
+		    login_ip,
+		    login_time,
+		    remark
+		)VALUES(
+			#{id},
+			#{userName},
+			#{nickName},
+			#{email},
+			#{phone},
+			#{birthday},
+			#{sex},
+			#{avatar},
+			#{password},
+			#{enabled},
+			#{deptId},
+			#{jobId},
+			#{createBy},
+			#{createTime},
+			#{loginIp},
+			#{loginTime},
+			#{remark}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user(
+		   id,
+		   user_name,
+		   nick_name,
+		   email,
+		   phone,
+		   birthday,
+		   sex,
+		   avatar,
+		   password,
+		   enabled,
+		   dept_id,
+		   job_id,
+		   create_by,
+		   create_time,
+		   login_ip,
+		   login_time,
+		   remark
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.userName},
+			#{item.nickName},
+			#{item.email},
+			#{item.phone},
+			#{item.birthday},
+			#{item.sex},
+			#{item.avatar},
+			#{item.password},
+			#{item.enabled},
+			#{item.deptId},
+			#{item.jobId},
+			#{item.createBy},
+			#{item.createTime},
+			#{item.loginIp},
+			#{item.loginTime},
+			#{item.remark}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="userName != null">
+	    		user_name= #{userName},
+			</if>
+			<if test="nickName != null">
+	    		nick_name= #{nickName},
+			</if>
+			<if test="email != null">
+	    		email= #{email},
+			</if>
+			<if test="phone != null">
+	    		phone= #{phone},
+			</if>
+			<if test="birthday != null">
+				birthday= #{birthday},
+			</if>
+			<if test="sex != null">
+	    		sex= #{sex},
+			</if>
+			<if test="avatar != null">
+	    		avatar= #{avatar},
+			</if>
+			<if test="password != null">
+	    		password= #{password},
+			</if>
+			<if test="enabled != null">
+	    		enabled= #{enabled},
+			</if>
+			<if test="deptId != null">
+	    		dept_id= #{deptId},
+			</if>
+			<if test="jobId != null">
+	    		job_id= #{jobId},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="loginIp != null">
+	    		login_ip= #{loginIp},
+			</if>
+			<if test="loginTime != null">
+	    		login_time= #{loginTime},
+			</if>
+			<if test="remark != null">
+	    		remark= #{remark},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysUserDO">
+        UPDATE sys_user
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.userName != null">
+				user_name= #{entity.userName},
+	        </if>
+			<if test="entity.nickName != null">
+				nick_name= #{entity.nickName},
+	        </if>
+			<if test="entity.email != null">
+				email= #{entity.email},
+	        </if>
+			<if test="entity.phone != null">
+				phone= #{entity.phone},
+	        </if>
+			<if test="entity.birthday != null">
+				birthday= #{entity.birthday},
+	        </if>
+			<if test="entity.sex != null">
+				sex= #{entity.sex},
+	        </if>
+			<if test="entity.avatar != null">
+				avatar= #{entity.avatar},
+	        </if>
+			<if test="entity.password != null">
+				password= #{entity.password},
+	        </if>
+			<if test="entity.enabled != null">
+				enabled= #{entity.enabled},
+	        </if>
+			<if test="entity.deptId != null">
+				dept_id= #{entity.deptId},
+	        </if>
+			<if test="entity.jobId != null">
+				job_id= #{entity.jobId},
+	        </if>
+			<if test="entity.createBy != null">
+				create_by= #{entity.createBy},
+	        </if>
+			<if test="entity.createTime != null">
+				create_time= #{entity.createTime},
+	        </if>
+			<if test="entity.loginIp != null">
+				login_ip= #{entity.loginIp},
+	        </if>
+			<if test="entity.loginTime != null">
+				login_time= #{entity.loginTime},
+	        </if>
+			<if test="entity.remark != null">
+				remark= #{entity.remark},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update sys_user
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysUserDO">
+		delete from sys_user
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_user where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		user_name,
+		nick_name,
+		email,
+		phone,
+		birthday,
+		sex,
+		avatar,
+		password,
+		enabled,
+		dept_id,
+		job_id,
+		create_by,
+		create_time,
+		login_ip,
+		login_time,
+		remark
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="userName != null and userName != ''">
+        		and user_name=#{userName}
+    		</if>
+			<if test="nickName != null and nickName != ''">
+        		and nick_name=#{nickName}
+    		</if>
+			<if test="email != null and email != ''">
+        		and email=#{email}
+    		</if>
+			<if test="phone != null and phone != ''">
+        		and phone=#{phone}
+    		</if>
+			<if test="birthday != null and birthday != ''">
+        		and birthday=#{birthday}
+    		</if>
+			<if test="sex != null">
+        		and sex=#{sex}
+    		</if>
+			<if test="avatar != null and avatar != ''">
+        		and avatar=#{avatar}
+    		</if>
+			<if test="password != null and password != ''">
+        		and password=#{password}
+    		</if>
+			<if test="enabled != null">
+        		and enabled=#{enabled}
+    		</if>
+			<if test="deptId != null">
+        		and dept_id=#{deptId}
+    		</if>
+			<if test="jobId != null">
+        		and job_id=#{jobId}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="loginIp != null and loginIp != ''">
+        		and login_ip=#{loginIp}
+    		</if>
+			<if test="loginTime != null">
+        		and login_time=#{loginTime}
+    		</if>
+			<if test="remark != null and remark != ''">
+        		and remark=#{remark}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysUserDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_user
+	    <include refid="where_condition"/>
+		order by create_time desc
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysUserDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_user
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_user
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_user
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_user t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="userName != null and userName != ''">
+                and user_name=#{userName}
+            </if>
+			<if test="nickName != null and nickName != ''">
+                and nick_name=#{nickName}
+            </if>
+			<if test="email != null and email != ''">
+                and email=#{email}
+            </if>
+			<if test="phone != null and phone != ''">
+                and phone=#{phone}
+            </if>
+			<if test="birthday != null and birthday != ''">
+                and birthday=#{birthday}
+            </if>
+			<if test="sex != null">
+                and sex=#{sex}
+            </if>
+			<if test="avatar != null and avatar != ''">
+                and avatar=#{avatar}
+            </if>
+			<if test="password != null and password != ''">
+                and password=#{password}
+            </if>
+			<if test="enabled != null">
+                and enabled=#{enabled}
+            </if>
+			<if test="deptId != null">
+                and dept_id=#{deptId}
+            </if>
+			<if test="jobId != null">
+                and job_id=#{jobId}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="loginIp != null and loginIp != ''">
+                and login_ip=#{loginIp}
+            </if>
+			<if test="loginTime != null">
+                and login_time=#{loginTime}
+            </if>
+			<if test="remark != null and remark != ''">
+                and remark=#{remark}
+            </if>
+        </where>
+    </select>
+
+</mapper>

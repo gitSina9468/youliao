@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysLoginLogDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysLoginLogDO">
+        <result property="id" column="id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="ip" column="ip"/>
+        <result property="loginLocation" column="login_location"/>
+        <result property="browser" column="browser"/>
+        <result property="os" column="os"/>
+        <result property="status" column="status"/>
+        <result property="msg" column="msg"/>
+        <result property="loginTime" column="login_time"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysLoginLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_login_log(
+		    id,
+		    login_name,
+		    ip,
+		    login_location,
+		    browser,
+		    os,
+		    status,
+		    msg,
+		    login_time
+		)VALUES(
+			#{id},
+			#{loginName},
+			#{ip},
+			#{loginLocation},
+			#{browser},
+			#{os},
+			#{status},
+			#{msg},
+			#{loginTime}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_login_log(
+		   id,
+		   login_name,
+		   ip,
+		   login_location,
+		   browser,
+		   os,
+		   status,
+		   msg,
+		   login_time
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.loginName},
+			#{item.ip},
+			#{item.loginLocation},
+			#{item.browser},
+			#{item.os},
+			#{item.status},
+			#{item.msg},
+			#{item.loginTime}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="loginName != null">
+	    		login_name= #{loginName},
+			</if>
+			<if test="ip != null">
+	    		ip= #{ip},
+			</if>
+			<if test="loginLocation != null">
+	    		login_location= #{loginLocation},
+			</if>
+			<if test="browser != null">
+	    		browser= #{browser},
+			</if>
+			<if test="os != null">
+	    		os= #{os},
+			</if>
+			<if test="status != null">
+	    		status= #{status},
+			</if>
+			<if test="msg != null">
+	    		msg= #{msg},
+			</if>
+			<if test="loginTime != null">
+	    		login_time= #{loginTime},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysLoginLogDO">
+        UPDATE sys_login_log
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.loginName != null">
+				login_name= #{entity.loginName},
+	        </if>
+			<if test="entity.ip != null">
+				ip= #{entity.ip},
+	        </if>
+			<if test="entity.loginLocation != null">
+				login_location= #{entity.loginLocation},
+	        </if>
+			<if test="entity.browser != null">
+				browser= #{entity.browser},
+	        </if>
+			<if test="entity.os != null">
+				os= #{entity.os},
+	        </if>
+			<if test="entity.status != null">
+				status= #{entity.status},
+	        </if>
+			<if test="entity.msg != null">
+				msg= #{entity.msg},
+	        </if>
+			<if test="entity.loginTime != null">
+				login_time= #{entity.loginTime},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update sys_login_log
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysLoginLogDO">
+		delete from sys_login_log
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_login_log where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		login_name,
+		ip,
+		login_location,
+		browser,
+		os,
+		status,
+		msg,
+		login_time
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="loginName != null and loginName != ''">
+        		and login_name like concat('%',#{loginName},'%')
+    		</if>
+			<if test="ip != null and ip != ''">
+        		and ip=#{ip}
+    		</if>
+			<if test="loginLocation != null and loginLocation != ''">
+        		and login_location like concat('%',#{loginLocation},'%')
+    		</if>
+			<if test="browser != null and browser != ''">
+        		and browser=#{browser}
+    		</if>
+			<if test="os != null and os != ''">
+        		and os=#{os}
+    		</if>
+			<if test="status != null">
+        		and status=#{status}
+    		</if>
+			<if test="msg != null and msg != ''">
+        		and msg=#{msg}
+    		</if>
+			<if test="loginTime != null">
+        		and login_time=#{loginTime}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysLoginLogDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_login_log
+	    <include refid="where_condition"/>
+		order by login_time desc
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysLoginLogDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_login_log
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_login_log
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_login_log
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_login_log t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="loginName != null and loginName != ''">
+                and login_name=#{loginName}
+            </if>
+			<if test="ip != null and ip != ''">
+                and ip=#{ip}
+            </if>
+			<if test="loginLocation != null and loginLocation != ''">
+                and login_location=#{loginLocation}
+            </if>
+			<if test="browser != null and browser != ''">
+                and browser=#{browser}
+            </if>
+			<if test="os != null and os != ''">
+                and os=#{os}
+            </if>
+			<if test="status != null">
+                and status=#{status}
+            </if>
+			<if test="msg != null and msg != ''">
+                and msg=#{msg}
+            </if>
+			<if test="loginTime != null">
+                and login_time=#{loginTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

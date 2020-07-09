@@ -1,0 +1,81 @@
+server:
+  port: 8080
+  servlet:
+      context-path: /api
+      session:
+            timeout: 7200s
+
+logging:
+  config: classpath:logback-spring.xml
+
+spring:
+ # 环境 dev|test|prod
+  profiles:
+    active: dev
+  resources:
+    static-locations: classpath:/static,classpath:/statics,classpath:/public,classpath:/resources,classpath:/META-INF/resources,file:///var/web/youliao/
+    #  linux  file:///var/web/youliao/  window file:///E:/jinkai-project/doc/
+  mvc:
+    static-path-pattern: /**
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+      multipart:
+        enabled: true
+        max-file-size: 100MB
+        max-request-size: 100MB
+        location: ${user.dir}/multipart
+  #表空间,oracle请一定要设置该属性,如果不设置查找表时将查找到大量的系统表,非常影响性能
+  datasource:
+        name: youliao-security
+  freemarker:
+      template-loader-path: classpath:/templates/
+      suffix: .ftl
+      charset: utf-8
+      default-encoding: utf-8
+      content-type: text/html;charset=utf-8
+      #设定所有request的属性在merge到模板的时候，是否要都添加到model中
+      expose-request-attributes: true
+      #设定所有HttpSession的属性在merge到模板的时候，是否要都添加到model中.
+      expose-session-attributes: true
+      #设定是否以springMacroRequestContext的形式暴露RequestContext给Spring’s macro library使用
+      expose-spring-macro-helpers: true
+      #指定RequestContext属性的名.
+      request-context-attribute: request
+      #缓存
+      cache: false
+      settings:
+           #重新加载模版文件 间隔时间
+           template_update_delay: 10
+           #中文
+           locale: zh_CN
+           #日期-时间格式化
+           datetime_format: yyyy-MM-dd HH:mm:ss
+           #日期格式化
+           date_format: yyyy-MM-dd
+           #数字格式化
+           number_format: #.####
+           #兼容传统模式
+           classic_compatible: true
+           #忽略异常配置
+           template_exception_handler: ignore
+
+  mail:
+      # qq
+      # host: smtp.qq.com
+      # 163
+      host: smtp.163.com
+      port: 587
+      username: XXXXXXX@163.com
+  #      password: 此密码为 上面服务启用的授权码
+      password: XXXXXXX
+      protocol: smtp
+      default-encoding: UTF-8
+      properties:
+          mail.smtp.auth: true
+          mail.smtp.starttls.enable: true
+          mail.smtp.starttls.required: true
+          mail.smtp.socketFactory.port: 465
+          mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+          mail.smtp.socketFactory.fallback: false

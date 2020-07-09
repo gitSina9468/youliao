@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysMenuDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysMenuDO">
+        <result property="id" column="id"/>
+        <result property="menu" column="menu"/>
+        <result property="isFrame" column="is_frame"/>
+        <result property="component" column="component"/>
+        <result property="componentName" column="component_name"/>
+        <result property="path" column="path"/>
+        <result property="redirect" column="redirect"/>
+        <result property="pid" column="pid"/>
+        <result property="type" column="type"/>
+        <result property="visible" column="visible"/>
+        <result property="permission" column="permission"/>
+        <result property="cache" column="cache"/>
+        <result property="icon" column="icon"/>
+        <result property="sort" column="sort"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysMenuDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_menu(
+		    id,
+		    menu,
+		    is_frame,
+		    component,
+		    component_name,
+		    path,
+		    redirect,
+		    pid,
+		    type,
+		    visible,
+		    permission,
+		    cache,
+		    icon,
+		    sort,
+		    create_by,
+		    create_time,
+		    remark
+		)VALUES(
+			#{id},
+			#{menu},
+			#{isFrame},
+			#{component},
+			#{componentName},
+			#{path},
+			#{redirect},
+			#{pid},
+			#{type},
+			#{visible},
+			#{permission},
+			#{cache},
+			#{icon},
+			#{sort},
+			#{createBy},
+			#{createTime},
+			#{remark}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_menu(
+		   id,
+		   menu,
+		   is_frame,
+		   component,
+		   component_name,
+		   path,
+		   redirect,
+		   pid,
+		   type,
+		   visible,
+		   permission,
+		   cache,
+		   icon,
+		   sort,
+		   create_by,
+		   create_time,
+		   remark
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.menu},
+			#{item.isFrame},
+			#{item.component},
+			#{item.componentName},
+			#{item.path},
+			#{item.redirect},
+			#{item.pid},
+			#{item.type},
+			#{item.visible},
+			#{item.permission},
+			#{item.cache},
+			#{item.icon},
+			#{item.sort},
+			#{item.createBy},
+			#{item.createTime},
+			#{item.remark}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="menu != null">
+	    		menu= #{menu},
+			</if>
+			<if test="isFrame != null">
+	    		is_frame= #{isFrame},
+			</if>
+			<if test="component != null">
+	    		component= #{component},
+			</if>
+			<if test="componentName != null">
+	    		component_name= #{componentName},
+			</if>
+			<if test="path != null">
+	    		path= #{path},
+			</if>
+			<if test="redirect != null">
+				redirect= #{redirect},
+			</if>
+			<if test="pid != null">
+	    		pid= #{pid},
+			</if>
+			<if test="type != null">
+	    		type= #{type},
+			</if>
+			<if test="visible != null">
+	    		visible= #{visible},
+			</if>
+			<if test="permission != null">
+	    		permission= #{permission},
+			</if>
+			<if test="cache != null">
+	    		cache= #{cache},
+			</if>
+			<if test="icon != null">
+	    		icon= #{icon},
+			</if>
+			<if test="sort != null">
+	    		sort= #{sort},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="remark != null">
+	    		remark= #{remark},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysMenuDO">
+        UPDATE sys_menu
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.menu != null">
+				menu= #{entity.menu},
+	        </if>
+			<if test="entity.isFrame != null">
+				is_frame= #{entity.isFrame},
+	        </if>
+			<if test="entity.component != null">
+				component= #{entity.component},
+	        </if>
+			<if test="entity.componentName != null">
+				component_name= #{entity.componentName},
+	        </if>
+			<if test="entity.path != null">
+				path= #{entity.path},
+	        </if>
+			<if test="entity.redirect != null">
+				redirect= #{entity.redirect},
+	        </if>
+			<if test="entity.pid != null">
+				pid= #{entity.pid},
+	        </if>
+			<if test="entity.type != null">
+				type= #{entity.type},
+	        </if>
+			<if test="entity.visible != null">
+				visible= #{entity.visible},
+	        </if>
+			<if test="entity.permission != null">
+				permission= #{entity.permission},
+	        </if>
+			<if test="entity.cache != null">
+				cache= #{entity.cache},
+	        </if>
+			<if test="entity.icon != null">
+				icon= #{entity.icon},
+	        </if>
+			<if test="entity.sort != null">
+				sort= #{entity.sort},
+	        </if>
+			<if test="entity.createBy != null">
+				create_by= #{entity.createBy},
+	        </if>
+			<if test="entity.createTime != null">
+				create_time= #{entity.createTime},
+	        </if>
+			<if test="entity.remark != null">
+				remark= #{entity.remark},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update sys_menu
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysMenuDO">
+		delete from sys_menu
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_menu where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		menu,
+		is_frame,
+		component,
+		component_name,
+		path,
+		redirect,
+		pid,
+		type,
+		visible,
+		permission,
+		cache,
+		icon,
+		sort,
+		create_by,
+		create_time,
+		remark
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="menu != null and menu != ''">
+        		and menu=#{menu}
+    		</if>
+			<if test="isFrame != null">
+        		and is_frame=#{isFrame}
+    		</if>
+			<if test="component != null and component != ''">
+        		and component=#{component}
+    		</if>
+			<if test="componentName != null and componentName != ''">
+        		and component_name=#{componentName}
+    		</if>
+			<if test="path != null and path != ''">
+        		and path=#{path}
+    		</if>
+			<if test="redirect != null and redirect != ''">
+        		and redirect=#{redirect}
+    		</if>
+			<if test="pid != null">
+        		and pid=#{pid}
+    		</if>
+			<if test="type != null">
+        		and type=#{type}
+    		</if>
+			<if test="visible != null">
+        		and visible=#{visible}
+    		</if>
+			<if test="permission != null and permission != ''">
+        		and permission=#{permission}
+    		</if>
+			<if test="cache != null">
+        		and cache=#{cache}
+    		</if>
+			<if test="icon != null and icon != ''">
+        		and icon=#{icon}
+    		</if>
+			<if test="sort != null">
+        		and sort=#{sort}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="remark != null and remark != ''">
+        		and remark=#{remark}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysMenuDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_menu
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysMenuDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_menu
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_menu
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_menu
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_menu t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="menu != null and menu != ''">
+                and menu=#{menu}
+            </if>
+			<if test="isFrame != null">
+                and is_frame=#{isFrame}
+            </if>
+			<if test="component != null and component != ''">
+                and component=#{component}
+            </if>
+			<if test="componentName != null and componentName != ''">
+                and component_name=#{componentName}
+            </if>
+			<if test="path != null and path != ''">
+                and path=#{path}
+            </if>
+			<if test="redirect != null and redirect != ''">
+                and redirect=#{redirect}
+            </if>
+			<if test="pid != null">
+                and pid=#{pid}
+            </if>
+			<if test="type != null">
+                and type=#{type}
+            </if>
+			<if test="visible != null">
+                and visible=#{visible}
+            </if>
+			<if test="permission != null and permission != ''">
+                and permission=#{permission}
+            </if>
+			<if test="cache != null">
+                and cache=#{cache}
+            </if>
+			<if test="icon != null and icon != ''">
+                and icon=#{icon}
+            </if>
+			<if test="sort != null">
+                and sort=#{sort}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="remark != null and remark != ''">
+                and remark=#{remark}
+            </if>
+        </where>
+    </select>
+
+</mapper>

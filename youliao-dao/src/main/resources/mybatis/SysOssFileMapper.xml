@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysOssFileDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysOssFileDO">
+        <result property="id" column="id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="fileUrl" column="file_url"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="type" column="type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysOssFileDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_oss_file(
+		    id,
+		    file_name,
+		    file_url,
+		    file_size,
+		    type,
+		    create_time,
+		    create_by
+		)VALUES(
+			#{id},
+			#{fileName},
+			#{fileUrl},
+			#{fileSize},
+			#{type},
+			#{createTime},
+			#{createBy}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_oss_file(
+		   id,
+		   file_name,
+		   file_url,
+		   file_size,
+		   type,
+		   create_time,
+		   create_by
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.fileName},
+			#{item.fileUrl},
+			#{item.fileSize},
+			#{item.type},
+			#{item.createTime},
+			#{item.createBy}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="fileName != null">
+	    		file_name= #{fileName},
+			</if>
+			<if test="fileUrl != null">
+	    		file_url= #{fileUrl},
+			</if>
+			<if test="fileSize != null">
+	    		file_size= #{fileSize},
+			</if>
+			<if test="type != null">
+	    		type= #{type},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysOssFileDO">
+        UPDATE sys_oss_file
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.fileName != null">
+				file_name= #{entity.fileName},
+	        </if>
+			<if test="entity.fileUrl != null">
+				file_url= #{entity.fileUrl},
+	        </if>
+			<if test="entity.fileSize != null">
+				file_size= #{entity.fileSize},
+	        </if>
+			<if test="entity.type != null">
+				type= #{entity.type},
+	        </if>
+			<if test="entity.createTime != null">
+				create_time= #{entity.createTime},
+	        </if>
+			<if test="entity.createBy != null">
+				create_by= #{entity.createBy},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update sys_oss_file
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysOssFileDO">
+		delete from sys_oss_file
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_oss_file where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		file_name,
+		file_url,
+		file_size,
+		type,
+		create_time,
+		create_by
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="fileName != null and fileName != ''">
+        		and file_name=#{fileName}
+    		</if>
+			<if test="fileUrl != null and fileUrl != ''">
+        		and file_url=#{fileUrl}
+    		</if>
+			<if test="fileSize != null">
+        		and file_size=#{fileSize}
+    		</if>
+			<if test="type != null and type != ''">
+        		and type=#{type}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysOssFileDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_oss_file
+	    <include refid="where_condition"/>
+		order by create_time desc
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysOssFileDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_oss_file
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_oss_file
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_oss_file
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_oss_file t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="fileName != null and fileName != ''">
+                and file_name=#{fileName}
+            </if>
+			<if test="fileUrl != null and fileUrl != ''">
+                and file_url=#{fileUrl}
+            </if>
+			<if test="fileSize != null">
+                and file_size=#{fileSize}
+            </if>
+			<if test="type != null and type != ''">
+                and type=#{type}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+        </where>
+    </select>
+
+</mapper>

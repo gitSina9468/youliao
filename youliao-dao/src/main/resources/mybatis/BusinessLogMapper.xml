@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.BusinessLogDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.BusinessLogDO">
+        <result property="id" column="id"/>
+        <result property="menu" column="menu"/>
+        <result property="button" column="button"/>
+        <result property="targetName" column="target_name"/>
+        <result property="methodName" column="method_name"/>
+        <result property="host" column="host"/>
+        <result property="requestParams" column="request_params"/>
+        <result property="responseParams" column="response_params"/>
+        <result property="result" column="result"/>
+        <result property="requestTime" column="request_time"/>
+        <result property="responseTime" column="response_time"/>
+        <result property="exception" column="exception"/>
+        <result property="description" column="description"/>
+        <result property="operationUser" column="operation_user"/>
+        <result property="operationType" column="operation_type"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.BusinessLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into business_log(
+		    id,
+		    menu,
+		    button,
+		    target_name,
+		    method_name,
+		    host,
+		    request_params,
+		    response_params,
+		    result,
+		    request_time,
+		    response_time,
+		    exception,
+		    description,
+		    operation_user,
+		    operation_type,
+		    create_time
+		)VALUES(
+			#{id},
+			#{menu},
+			#{button},
+			#{targetName},
+			#{methodName},
+			#{host},
+			#{requestParams},
+			#{responseParams},
+			#{result},
+			#{requestTime},
+			#{responseTime},
+			#{exception},
+			#{description},
+			#{operationUser},
+			#{operationType},
+			#{createTime}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into business_log(
+		   id,
+		   menu,
+		   button,
+		   target_name,
+		   method_name,
+		   host,
+		   request_params,
+		   response_params,
+		   result,
+		   request_time,
+		   response_time,
+		   exception,
+		   description,
+		   operation_user,
+		   operation_type,
+		   create_time
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.menu},
+			#{item.button},
+			#{item.targetName},
+			#{item.methodName},
+			#{item.host},
+			#{item.requestParams},
+			#{item.responseParams},
+			#{item.result},
+			#{item.requestTime},
+			#{item.responseTime},
+			#{item.exception},
+			#{item.description},
+			#{item.operationUser},
+			#{item.operationType},
+			#{item.createTime}
+		)
+		</foreach>
+	</insert>
+	
+
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from business_log where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		menu,
+		button,
+		target_name,
+		method_name,
+		host,
+		request_params,
+		response_params,
+		result,
+		request_time,
+		response_time,
+		exception,
+		description,
+		operation_user,
+		operation_type,
+		create_time
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null and id != ''">
+        		and id=#{id}
+    		</if>
+			<if test="menu != null and menu != ''">
+        		and menu=#{menu}
+    		</if>
+			<if test="button != null and button != ''">
+        		and button=#{button}
+    		</if>
+			<if test="targetName != null and targetName != ''">
+        		and target_name=#{targetName}
+    		</if>
+			<if test="methodName != null and methodName != ''">
+        		and method_name=#{methodName}
+    		</if>
+			<if test="host != null and host != ''">
+        		and host=#{host}
+    		</if>
+			<if test="requestParams != null and requestParams != ''">
+        		and request_params=#{requestParams}
+    		</if>
+			<if test="responseParams != null and responseParams != ''">
+        		and response_params=#{responseParams}
+    		</if>
+			<if test="result != null and result != ''">
+        		and result=#{result}
+    		</if>
+			<if test="requestTime != null">
+        		and request_time=#{requestTime}
+    		</if>
+			<if test="responseTime != null">
+        		and response_time=#{responseTime}
+    		</if>
+			<if test="exception != null and exception != ''">
+        		and exception=#{exception}
+    		</if>
+			<if test="description != null and description != ''">
+        		and description=#{description}
+    		</if>
+			<if test="operationUser != null and operationUser != ''">
+        		and operation_user=#{operationUser}
+    		</if>
+			<if test="operationType != null and operationType != ''">
+        		and operation_type=#{operationType}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.BusinessLogDO">
+        SELECT
+        <include refid="columns"/>
+		FROM business_log
+	    <include refid="where_condition"/>
+		order by create_time desc
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.BusinessLogDO">
+        SELECT
+        <include refid="columns"/>
+		FROM business_log
+	    <include refid="where_condition"/>
+    </select>
+
+
+
+</mapper>

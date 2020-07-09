@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysEmailDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysEmailDO">
+        <result property="id" column="id"/>
+        <result property="receiveEmail" column="receive_email"/>
+        <result property="subject" column="subject"/>
+        <result property="content" column="content"/>
+        <result property="attachFiles" column="attach_files"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+    </resultMap>
+
+
+    <!-- 新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysEmailDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_email(
+		    id,
+		    receive_email,
+		    subject,
+		    content,
+		    attach_files,
+		    send_time,
+		    create_time,
+		    create_by
+		)VALUES(
+			#{id},
+			#{receiveEmail},
+			#{subject},
+			#{content},
+			#{attachFiles},
+			#{sendTime},
+			#{createTime},
+			#{createBy}
+	    )
+	</insert>
+
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_email(
+		   id,
+		   receive_email,
+		   subject,
+		   content,
+		   attach_files,
+		   send_time,
+		   create_time,
+		   create_by
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.receiveEmail},
+			#{item.subject},
+			#{item.content},
+			#{item.attachFiles},
+			#{item.sendTime},
+			#{item.createTime},
+			#{item.createBy}
+		)
+		</foreach>
+	</insert>
+
+	<sql id="update_sql">
+        <set>
+			<if test="receiveEmail != null">
+	    		receive_email= #{receiveEmail},
+			</if>
+			<if test="subject != null">
+	    		subject= #{subject},
+			</if>
+			<if test="content != null">
+	    		content= #{content},
+			</if>
+			<if test="attachFiles != null">
+	    		attach_files= #{attachFiles},
+			</if>
+			<if test="sendTime != null">
+	    		send_time= #{sendTime},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+        </set>
+    </sql>
+
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysEmailDO">
+        UPDATE sys_email
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="item.receiveEmail != null">
+				receive_email= #{item.receiveEmail},
+	        </if>
+			<if test="item.subject != null">
+				subject= #{item.subject},
+	        </if>
+			<if test="item.content != null">
+				content= #{item.content},
+	        </if>
+			<if test="item.attachFiles != null">
+				attach_files= #{item.attachFiles},
+	        </if>
+			<if test="item.sendTime != null">
+				send_time= #{item.sendTime},
+	        </if>
+			<if test="item.createTime != null">
+				create_time= #{item.createTime},
+	        </if>
+			<if test="item.createBy != null">
+				create_by= #{item.createBy},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item">
+			update sys_email
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysEmailDO">
+		delete from sys_email
+		<include refid="where_condition"/>
+	</delete>
+
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_email where id in
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="columns">
+		id,
+		receive_email,
+		subject,
+		content,
+		attach_files,
+		send_time,
+		create_time,
+		create_by
+	</sql>
+
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="receiveEmail != null and receiveEmail != ''">
+        		and receive_email like concat('%',#{receiveEmail},'%')
+    		</if>
+			<if test="subject != null and subject != ''">
+        		and subject like concat('%',#{subject},'%')
+    		</if>
+			<if test="content != null and content != ''">
+        		and content=#{content}
+    		</if>
+			<if test="attachFiles != null and attachFiles != ''">
+        		and attach_files=#{attachFiles}
+    		</if>
+			<if test="sendTime != null">
+        		and send_time=#{sendTime}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysEmailDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_email
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysEmailDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_email
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_email
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_email
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_email t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="receiveEmail != null and receiveEmail != ''">
+                and receive_email=#{receiveEmail}
+            </if>
+			<if test="subject != null and subject != ''">
+                and subject=#{subject}
+            </if>
+			<if test="content != null and content != ''">
+                and content=#{content}
+            </if>
+			<if test="attachFiles != null and attachFiles != ''">
+                and attach_files=#{attachFiles}
+            </if>
+			<if test="sendTime != null">
+                and send_time=#{sendTime}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+        </where>
+    </select>
+
+</mapper>

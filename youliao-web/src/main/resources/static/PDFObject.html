@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在线浏览PDF</title>
+    <script type="text/javascript" src="/api/js/PDFObject.js"></script>
+    <script type="text/javascript" src="/api/js/jquery-3.2.1.min.js"></script>
+
+    <style>
+        html,body{
+            height: 100%;
+            overflow: hidden;
+            /* 添加背景颜色是为了方便查看整个body范围 */
+            background-color: #445666;
+            background:url(./img/black.jpg) no-repeat;
+            background-size: cover;
+            /*background-size: 100% 100%;*/
+
+        }
+
+        #example1{
+            /*!* 设置放置PDF的div的样式 *!*/
+            height: 100%;
+            width: 794px;
+            margin:0 auto;
+        }
+
+        /* PDF容器样式 */
+        /*.pdfobject-container{*/
+             /*height: 500px;*/
+        /*}*/
+
+        /* PDF样式 */
+        .pdfobject{
+             background: #1b2936;
+        }
+    </style>
+</head>
+<body>
+
+<div id="example1"></div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    var options = {
+        height: "900px",
+        width:"794px",
+        pdfOpenParams: {view: 'FitV', page: '0' },
+        name:"mans",
+        fallbackLink: "<p>您的浏览器暂不支持此pdf，请下载最新的浏览器</p>"
+    };
+
+
+    $(document).ready(function(){
+        if(PDFObject.supportsPDFs){
+            console.log("Yay, this browser supports inline PDFs.");
+        } else {
+            console.log("Boo, inline PDFs are not supported by this browser");
+        }
+        PDFObject.embed("https://test-hong-890219.oss-cn-beijing.aliyuncs.com/resume.pdf", "#example1");
+    })
+</script>

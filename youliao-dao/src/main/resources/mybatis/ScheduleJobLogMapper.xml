@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.ScheduleJobLogDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.ScheduleJobLogDO">
+        <result property="id" column="id"/>
+        <result property="jobName" column="job_name"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="costSeconds" column="cost_seconds"/>
+        <result property="result" column="result"/>
+        <result property="exception" column="exception"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+    </resultMap>
+
+
+    <!-- 新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.ScheduleJobLogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into schedule_job_log(
+		    id,
+		    job_name,
+		    start_time,
+		    end_time,
+		    cost_seconds,
+		    result,
+		    exception,
+		    create_time,
+		    create_by
+		)VALUES(
+			#{id},
+			#{jobName},
+			#{startTime},
+			#{endTime},
+			#{costSeconds},
+			#{result},
+			#{exception},
+			#{createTime},
+			#{createBy}
+	    )
+	</insert>
+
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into schedule_job_log(
+		   id,
+		   job_name,
+		   start_time,
+		   end_time,
+		   cost_seconds,
+		   result,
+		   exception,
+		   create_time,
+		   create_by
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.jobName},
+			#{item.startTime},
+			#{item.endTime},
+			#{item.costSeconds},
+			#{item.result},
+			#{item.exception},
+			#{item.createTime},
+			#{item.createBy}
+		)
+		</foreach>
+	</insert>
+
+	<sql id="update_sql">
+        <set>
+			<if test="jobName != null">
+	    		job_name= #{jobName},
+			</if>
+			<if test="startTime != null">
+	    		start_time= #{startTime},
+			</if>
+			<if test="endTime != null">
+	    		end_time= #{endTime},
+			</if>
+			<if test="costSeconds != null">
+	    		cost_seconds= #{costSeconds},
+			</if>
+			<if test="result != null">
+	    		result= #{result},
+			</if>
+			<if test="exception != null">
+	    		exception= #{exception},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+        </set>
+    </sql>
+
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.ScheduleJobLogDO">
+        UPDATE schedule_job_log
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="item.jobName != null">
+				job_name= #{item.jobName},
+	        </if>
+			<if test="item.startTime != null">
+				start_time= #{item.startTime},
+	        </if>
+			<if test="item.endTime != null">
+				end_time= #{item.endTime},
+	        </if>
+			<if test="item.costSeconds != null">
+				cost_seconds= #{item.costSeconds},
+	        </if>
+			<if test="item.result != null">
+				result= #{item.result},
+	        </if>
+			<if test="item.exception != null">
+				exception= #{item.exception},
+	        </if>
+			<if test="item.createTime != null">
+				create_time= #{item.createTime},
+	        </if>
+			<if test="item.createBy != null">
+				create_by= #{item.createBy},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item">
+			update schedule_job_log
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.ScheduleJobLogDO">
+		delete from schedule_job_log
+		<include refid="where_condition"/>
+	</delete>
+
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from schedule_job_log where id in
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="columns">
+		id,
+		job_name,
+		start_time,
+		end_time,
+		cost_seconds,
+		result,
+		exception,
+		create_time,
+		create_by
+	</sql>
+
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="jobName != null and jobName != ''">
+        		and job_name=#{jobName}
+    		</if>
+			<if test="startTime != null">
+        		and start_time=#{startTime}
+    		</if>
+			<if test="endTime != null">
+        		and end_time=#{endTime}
+    		</if>
+			<if test="costSeconds != null">
+        		and cost_seconds=#{costSeconds}
+    		</if>
+			<if test="result != null and result != ''">
+        		and result=#{result}
+    		</if>
+			<if test="exception != null and exception != ''">
+        		and exception=#{exception}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.ScheduleJobLogDO">
+        SELECT
+        <include refid="columns"/>
+		FROM schedule_job_log
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.ScheduleJobLogDO">
+        SELECT
+        <include refid="columns"/>
+		FROM schedule_job_log
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM schedule_job_log
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM schedule_job_log
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM schedule_job_log t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="jobName != null and jobName != ''">
+                and job_name=#{jobName}
+            </if>
+			<if test="startTime != null">
+                and start_time=#{startTime}
+            </if>
+			<if test="endTime != null">
+                and end_time=#{endTime}
+            </if>
+			<if test="costSeconds != null">
+                and cost_seconds=#{costSeconds}
+            </if>
+			<if test="result != null and result != ''">
+                and result=#{result}
+            </if>
+			<if test="exception != null and exception != ''">
+                and exception=#{exception}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.EsDocDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.EsDocDO">
+        <result property="docId" column="doc_id"/>
+        <result property="docName" column="doc_name"/>
+        <result property="docSize" column="doc_size"/>
+        <result property="docSha256" column="doc_sha256"/>
+        <result property="docCreateDate" column="doc_create_date"/>
+        <result property="docUserId" column="doc_user_id"/>
+        <result property="docFileId" column="doc_file_id"/>
+        <result property="docOpen" column="doc_open"/>
+        <result property="docType" column="doc_type"/>
+        <result property="docTitle" column="doc_title"/>
+        <result property="docContent" column="doc_content"/>
+        <result property="docDelete" column="doc_delete"/>
+        <result property="docModifyDate" column="doc_modify_date"/>
+        <result property="docIndex" column="doc_index"/>
+        <result property="source" column="source"/>
+        <result property="sourceUrl" column="source_url"/>
+        <result property="docStatus" column="doc_status"/>
+        <result property="docConvert" column="doc_convert"/>
+    </resultMap>
+
+
+    <!-- 新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.EsDocDO" useGeneratedKeys="true" keyProperty="docId">
+		insert into es_doc(
+		    doc_id,
+		    doc_name,
+		    doc_size,
+		    doc_sha256,
+		    doc_create_date,
+		    doc_user_id,
+		    doc_file_id,
+		    doc_open,
+		    doc_type,
+		    doc_title,
+		    doc_content,
+		    doc_delete,
+		    doc_modify_date,
+		    doc_index,
+		    source,
+		    source_url,
+		    doc_status,
+		    doc_convert
+		)VALUES(
+			#{docId},
+			#{docName},
+			#{docSize},
+			#{docSha256},
+			#{docCreateDate},
+			#{docUserId},
+			#{docFileId},
+			#{docOpen},
+			#{docType},
+			#{docTitle},
+			#{docContent},
+			#{docDelete},
+			#{docModifyDate},
+			#{docIndex},
+			#{source},
+			#{sourceUrl},
+			#{docStatus},
+			#{docConvert}
+	    )
+	</insert>
+
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="docId">
+		insert into es_doc(
+		   doc_id,
+		   doc_name,
+		   doc_size,
+		   doc_sha256,
+		   doc_create_date,
+		   doc_user_id,
+		   doc_file_id,
+		   doc_open,
+		   doc_type,
+		   doc_title,
+		   doc_content,
+		   doc_delete,
+		   doc_modify_date,
+		   doc_index,
+		   source,
+		   source_url,
+		   doc_status,
+		   doc_convert
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.docId},
+			#{item.docName},
+			#{item.docSize},
+			#{item.docSha256},
+			#{item.docCreateDate},
+			#{item.docUserId},
+			#{item.docFileId},
+			#{item.docOpen},
+			#{item.docType},
+			#{item.docTitle},
+			#{item.docContent},
+			#{item.docDelete},
+			#{item.docModifyDate},
+			#{item.docIndex},
+			#{item.source},
+			#{item.sourceUrl},
+			#{item.docStatus},
+			#{item.docConvert}
+		)
+		</foreach>
+	</insert>
+
+	<sql id="update_sql">
+        <set>
+			<if test="docId != null">
+	    		doc_id= #{docId},
+			</if>
+			<if test="docName != null">
+	    		doc_name= #{docName},
+			</if>
+			<if test="docSize != null">
+	    		doc_size= #{docSize},
+			</if>
+			<if test="docSha256 != null">
+	    		doc_sha256= #{docSha256},
+			</if>
+			<if test="docCreateDate != null">
+	    		doc_create_date= #{docCreateDate},
+			</if>
+			<if test="docUserId != null">
+	    		doc_user_id= #{docUserId},
+			</if>
+			<if test="docFileId != null">
+	    		doc_file_id= #{docFileId},
+			</if>
+			<if test="docOpen != null">
+	    		doc_open= #{docOpen},
+			</if>
+			<if test="docType != null">
+	    		doc_type= #{docType},
+			</if>
+			<if test="docTitle != null">
+	    		doc_title= #{docTitle},
+			</if>
+			<if test="docContent != null">
+	    		doc_content= #{docContent},
+			</if>
+			<if test="docDelete != null">
+	    		doc_delete= #{docDelete},
+			</if>
+			<if test="docModifyDate != null">
+	    		doc_modify_date= #{docModifyDate},
+			</if>
+			<if test="docIndex != null">
+	    		doc_index= #{docIndex},
+			</if>
+			<if test="source != null">
+	    		source= #{source},
+			</if>
+			<if test="sourceUrl != null">
+	    		source_url= #{sourceUrl},
+			</if>
+			<if test="docStatus != null">
+	    		doc_status= #{docStatus},
+			</if>
+			<if test="docConvert != null">
+	    		doc_convert= #{docConvert},
+			</if>
+        </set>
+    </sql>
+
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.EsDocDO">
+        UPDATE es_doc
+        <include refid="update_sql"/>
+        where doc_id = #{docId}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="item.docId != null">
+				doc_id= #{item.docId},
+	        </if>
+			<if test="item.docName != null">
+				doc_name= #{item.docName},
+	        </if>
+			<if test="item.docSize != null">
+				doc_size= #{item.docSize},
+	        </if>
+			<if test="item.docSha256 != null">
+				doc_sha256= #{item.docSha256},
+	        </if>
+			<if test="item.docCreateDate != null">
+				doc_create_date= #{item.docCreateDate},
+	        </if>
+			<if test="item.docUserId != null">
+				doc_user_id= #{item.docUserId},
+	        </if>
+			<if test="item.docFileId != null">
+				doc_file_id= #{item.docFileId},
+	        </if>
+			<if test="item.docOpen != null">
+				doc_open= #{item.docOpen},
+	        </if>
+			<if test="item.docType != null">
+				doc_type= #{item.docType},
+	        </if>
+			<if test="item.docTitle != null">
+				doc_title= #{item.docTitle},
+	        </if>
+			<if test="item.docContent != null">
+				doc_content= #{item.docContent},
+	        </if>
+			<if test="item.docDelete != null">
+				doc_delete= #{item.docDelete},
+	        </if>
+			<if test="item.docModifyDate != null">
+				doc_modify_date= #{item.docModifyDate},
+	        </if>
+			<if test="item.docIndex != null">
+				doc_index= #{item.docIndex},
+	        </if>
+			<if test="item.source != null">
+				source= #{item.source},
+	        </if>
+			<if test="item.sourceUrl != null">
+				source_url= #{item.sourceUrl},
+	        </if>
+			<if test="item.docStatus != null">
+				doc_status= #{item.docStatus},
+	        </if>
+			<if test="item.docConvert != null">
+				doc_convert= #{item.docConvert},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item">
+			update es_doc
+            <include refid="updateInBatch_sql"/>
+			where doc_id = #{item.docId};
+		</foreach>
+    </update>
+
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.EsDocDO">
+		delete from es_doc
+		<include refid="where_condition"/>
+	</delete>
+
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from es_doc where doc_id in
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="columns">
+		doc_id,
+		doc_name,
+		doc_size,
+		doc_sha256,
+		doc_create_date,
+		doc_user_id,
+		doc_file_id,
+		doc_open,
+		doc_type,
+		doc_title,
+		doc_content,
+		doc_delete,
+		doc_modify_date,
+		doc_index,
+		source,
+		source_url,
+		doc_status,
+		doc_convert
+	</sql>
+
+	<sql id="where_condition">
+        <where>
+			<if test="docId != null">
+        		and doc_id=#{docId}
+    		</if>
+			<if test="docName != null and docName != ''">
+        		and doc_name=#{docName}
+    		</if>
+			<if test="docSize != null">
+        		and doc_size=#{docSize}
+    		</if>
+			<if test="docSha256 != null and docSha256 != ''">
+        		and doc_sha256=#{docSha256}
+    		</if>
+			<if test="docCreateDate != null">
+        		and doc_create_date=#{docCreateDate}
+    		</if>
+			<if test="docUserId != null">
+        		and doc_user_id=#{docUserId}
+    		</if>
+			<if test="docFileId != null and docFileId != ''">
+        		and doc_file_id=#{docFileId}
+    		</if>
+			<if test="docOpen != null">
+        		and doc_open=#{docOpen}
+    		</if>
+			<if test="docType != null and docType != ''">
+        		and doc_type=#{docType}
+    		</if>
+			<if test="docTitle != null and docTitle != ''">
+        		and doc_title=#{docTitle}
+    		</if>
+			<if test="docContent != null">
+        		and doc_content=#{docContent}
+    		</if>
+			<if test="docDelete != null">
+        		and doc_delete=#{docDelete}
+    		</if>
+			<if test="docModifyDate != null">
+        		and doc_modify_date=#{docModifyDate}
+    		</if>
+			<if test="docIndex != null">
+        		and doc_index=#{docIndex}
+    		</if>
+			<if test="source != null and source != ''">
+        		and source=#{source}
+    		</if>
+			<if test="sourceUrl != null and sourceUrl != ''">
+        		and source_url=#{sourceUrl}
+    		</if>
+			<if test="docStatus != null">
+        		and doc_status=#{docStatus}
+    		</if>
+			<if test="docConvert != null">
+        		and doc_convert=#{docConvert}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.EsDocDO">
+        SELECT
+        <include refid="columns"/>
+		FROM es_doc
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.EsDocDO">
+        SELECT
+        <include refid="columns"/>
+		FROM es_doc
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM es_doc
+	    where doc_id = #{docId}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM es_doc
+        where doc_id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM es_doc t
+        <where>
+			<if test="docId != null">
+                and doc_id=#{docId}
+            </if>
+			<if test="docName != null and docName != ''">
+                and doc_name=#{docName}
+            </if>
+			<if test="docSize != null">
+                and doc_size=#{docSize}
+            </if>
+			<if test="docSha256 != null and docSha256 != ''">
+                and doc_sha256=#{docSha256}
+            </if>
+			<if test="docCreateDate != null">
+                and doc_create_date=#{docCreateDate}
+            </if>
+			<if test="docUserId != null">
+                and doc_user_id=#{docUserId}
+            </if>
+			<if test="docFileId != null and docFileId != ''">
+                and doc_file_id=#{docFileId}
+            </if>
+			<if test="docOpen != null">
+                and doc_open=#{docOpen}
+            </if>
+			<if test="docType != null and docType != ''">
+                and doc_type=#{docType}
+            </if>
+			<if test="docTitle != null and docTitle != ''">
+                and doc_title=#{docTitle}
+            </if>
+			<if test="docContent != null">
+                and doc_content=#{docContent}
+            </if>
+			<if test="docDelete != null">
+                and doc_delete=#{docDelete}
+            </if>
+			<if test="docModifyDate != null">
+                and doc_modify_date=#{docModifyDate}
+            </if>
+			<if test="docIndex != null">
+                and doc_index=#{docIndex}
+            </if>
+			<if test="source != null and source != ''">
+                and source=#{source}
+            </if>
+			<if test="sourceUrl != null and sourceUrl != ''">
+                and source_url=#{sourceUrl}
+            </if>
+			<if test="docStatus != null">
+                and doc_status=#{docStatus}
+            </if>
+			<if test="docConvert != null">
+                and doc_convert=#{docConvert}
+            </if>
+        </where>
+    </select>
+
+</mapper>

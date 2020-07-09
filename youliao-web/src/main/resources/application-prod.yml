@@ -1,0 +1,45 @@
+jdbc:
+     maxActive: 200
+     maxIdleTime: 20
+     password: root123
+     url: jdbc:mysql://127.0.0.1/youliao-security?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=true
+     minIdle: 5
+     username: root
+     type: com.alibaba.druid.pool.DruidDataSource
+     removeAbandonedTimeout: 300
+     maxIdle: 20
+     initialPoolSize: 10
+     maxStatements: 50
+     initialSize: 5
+     maxWait: 60000
+     maxPoolSize: 200
+     driverClassName: com.mysql.jdbc.Driver
+     idleConnectionTestPeriod: 60
+     acquireIncrement: 10
+     maxOpenPreparedStatements: 10
+     minPoolSize: 5
+
+#pagehelper插件
+#logging.level.com.example.demo.dao=DEBUG
+pagehelper:
+        helperDialect: mysql
+        reasonable: true
+        params: count=countSql
+
+#生成代码的项目根路径  访问   http://localhost:8080/auto-code-ui/ui/index.html
+auto-code:
+      parentPath: D:\\resource\\workspace\\auto-code\\auto-code-springboot-demo
+#生成代码的父包 如父包是com.zengtengpeng.test  controller将在com.zengtengpeng.test.controller下 bean 将在com.zengtengpeng.test.bean下 ,service,dao同理
+      parentPack: com.seahorse.youliao
+
+
+#https://gitee.com/ztp/redisson-spring-boot-starter
+#单Redis节点模式
+redisson:
+      password: 123456
+#      集群模式:SINGLE(单例),SENTINEL(哨兵),MASTERSLAVE(主从),CLUSTER(集群),REPLICATED(云托管)
+      model: SINGLE
+#       单例模式参数
+      singleServerConfig:
+                address: 127.0.0.1:6379
+                database: 1

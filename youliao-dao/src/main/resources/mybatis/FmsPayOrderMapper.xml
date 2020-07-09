@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.FmsPayOrderDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.FmsPayOrderDO">
+        <result property="id" column="id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="productName" column="product_name"/>
+        <result property="description" column="description"/>
+        <result property="outTradeNo" column="out_trade_no"/>
+        <result property="transactionId" column="transaction_id"/>
+        <result property="nonceStr" column="nonce_str"/>
+        <result property="payUser" column="pay_user"/>
+        <result property="phone" column="phone"/>
+        <result property="qrCodeUrl" column="qr_code_url"/>
+        <result property="payFee" column="pay_fee"/>
+        <result property="payType" column="pay_type"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="orderRefundStatus" column="order_refund_status"/>
+        <result property="refundFee" column="refund_fee"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.FmsPayOrderDO" useGeneratedKeys="true" keyProperty="id">
+		insert into fms_pay_order(
+		    id,
+		    order_no,
+		    product_name,
+		    description,
+		    out_trade_no,
+		    transaction_id,
+		    nonce_str,
+		    pay_user,
+		    phone,
+		    qr_code_url,
+		    pay_fee,
+		    pay_type,
+		    pay_status,
+		    order_refund_status,
+		    refund_fee,
+		    create_time,
+		    create_by,
+		    update_time,
+		    update_by
+		)VALUES(
+			#{id},
+			#{orderNo},
+			#{productName},
+			#{description},
+			#{outTradeNo},
+			#{transactionId},
+			#{nonceStr},
+			#{payUser},
+			#{phone},
+			#{qrCodeUrl},
+			#{payFee},
+			#{payType},
+			#{payStatus},
+			#{orderRefundStatus},
+			#{refundFee},
+			#{createTime},
+			#{createBy},
+			#{updateTime},
+			#{updateBy}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into fms_pay_order(
+		   id,
+		   order_no,
+		   product_name,
+		   description,
+		   out_trade_no,
+		   transaction_id,
+		   nonce_str,
+		   pay_user,
+		   phone,
+		   qr_code_url,
+		   pay_fee,
+		   pay_type,
+		   pay_status,
+		   order_refund_status,
+		   refund_fee,
+		   create_time,
+		   create_by,
+		   update_time,
+		   update_by
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.orderNo},
+			#{item.productName},
+			#{item.description},
+			#{item.outTradeNo},
+			#{item.transactionId},
+			#{item.nonceStr},
+			#{item.payUser},
+			#{item.phone},
+			#{item.qrCodeUrl},
+			#{item.payFee},
+			#{item.payType},
+			#{item.payStatus},
+			#{item.orderRefundStatus},
+			#{item.refundFee},
+			#{item.createTime},
+			#{item.createBy},
+			#{item.updateTime},
+			#{item.updateBy}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="orderNo != null">
+	    		order_no= #{orderNo},
+			</if>
+			<if test="productName != null">
+	    		product_name= #{productName},
+			</if>
+			<if test="description != null">
+	    		description= #{description},
+			</if>
+			<if test="outTradeNo != null">
+	    		out_trade_no= #{outTradeNo},
+			</if>
+			<if test="transactionId != null">
+	    		transaction_id= #{transactionId},
+			</if>
+			<if test="nonceStr != null">
+	    		nonce_str= #{nonceStr},
+			</if>
+			<if test="payUser != null">
+	    		pay_user= #{payUser},
+			</if>
+			<if test="phone != null">
+	    		phone= #{phone},
+			</if>
+			<if test="qrCodeUrl != null">
+	    		qr_code_url= #{qrCodeUrl},
+			</if>
+			<if test="payFee != null">
+	    		pay_fee= #{payFee},
+			</if>
+			<if test="payType != null">
+	    		pay_type= #{payType},
+			</if>
+			<if test="payStatus != null">
+	    		pay_status= #{payStatus},
+			</if>
+			<if test="orderRefundStatus != null">
+				order_refund_status= #{orderRefundStatus},
+			</if>
+			<if test="refundFee != null">
+	    		refund_fee= #{refundFee},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+			<if test="updateTime != null">
+	    		update_time= #{updateTime},
+			</if>
+			<if test="updateBy != null">
+	    		update_by= #{updateBy},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.FmsPayOrderDO">
+        UPDATE fms_pay_order
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.orderNo != null">
+				order_no= #{entity.orderNo},
+	        </if>
+			<if test="entity.productName != null">
+				product_name= #{entity.productName},
+	        </if>
+			<if test="entity.description != null">
+				description= #{entity.description},
+	        </if>
+			<if test="entity.outTradeNo != null">
+				out_trade_no= #{entity.outTradeNo},
+	        </if>
+			<if test="entity.transactionId != null">
+				transaction_id= #{entity.transactionId},
+	        </if>
+			<if test="entity.nonceStr != null">
+				nonce_str= #{entity.nonceStr},
+	        </if>
+			<if test="entity.payUser != null">
+				pay_user= #{entity.payUser},
+	        </if>
+			<if test="entity.phone != null">
+				phone= #{entity.phone},
+	        </if>
+			<if test="entity.qrCodeUrl != null">
+				qr_code_url= #{entity.qrCodeUrl},
+	        </if>
+			<if test="entity.payFee != null">
+				pay_fee= #{entity.payFee},
+	        </if>
+			<if test="entity.payType != null">
+				pay_type= #{entity.payType},
+	        </if>
+			<if test="entity.payStatus != null">
+				pay_status= #{entity.payStatus},
+	        </if>
+			<if test="entity.orderRefundStatus != null">
+				order_refund_status= #{entity.orderRefundStatus},
+	        </if>
+			<if test="entity.refundFee != null">
+				refund_fee= #{entity.refundFee},
+	        </if>
+			<if test="entity.createTime != null">
+				create_time= #{entity.createTime},
+	        </if>
+			<if test="entity.createBy != null">
+				create_by= #{entity.createBy},
+	        </if>
+			<if test="entity.updateTime != null">
+				update_time= #{entity.updateTime},
+	        </if>
+			<if test="entity.updateBy != null">
+				update_by= #{entity.updateBy},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update fms_pay_order
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.FmsPayOrderDO">
+		delete from fms_pay_order
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from fms_pay_order where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		order_no,
+		product_name,
+		description,
+		out_trade_no,
+		transaction_id,
+		nonce_str,
+		pay_user,
+		phone,
+		qr_code_url,
+		pay_fee,
+		pay_type,
+		pay_status,
+		order_refund_status,
+		refund_fee,
+		create_time,
+		create_by,
+		update_time,
+		update_by
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="orderNo != null and orderNo != ''">
+        		and order_no=#{orderNo}
+    		</if>
+			<if test="productName != null and productName != ''">
+        		and product_name=#{productName}
+    		</if>
+			<if test="description != null and description != ''">
+        		and description=#{description}
+    		</if>
+			<if test="outTradeNo != null and outTradeNo != ''">
+        		and out_trade_no=#{outTradeNo}
+    		</if>
+			<if test="transactionId != null and transactionId != ''">
+        		and transaction_id=#{transactionId}
+    		</if>
+			<if test="nonceStr != null and nonceStr != ''">
+        		and nonce_str=#{nonceStr}
+    		</if>
+			<if test="payUser != null and payUser != ''">
+        		and pay_user=#{payUser}
+    		</if>
+			<if test="phone != null and phone != ''">
+        		and phone=#{phone}
+    		</if>
+			<if test="qrCodeUrl != null and qrCodeUrl != ''">
+        		and qr_code_url=#{qrCodeUrl}
+    		</if>
+			<if test="payFee != null">
+        		and pay_fee=#{payFee}
+    		</if>
+			<if test="payType != null">
+        		and pay_type=#{payType}
+    		</if>
+			<if test="payStatus != null">
+        		and pay_status=#{payStatus}
+    		</if>
+			<if test="orderRefundStatus != null">
+        		and order_refund_status=#{orderRefundStatus}
+    		</if>
+			<if test="refundFee != null">
+        		and refund_fee=#{refundFee}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+			<if test="updateTime != null">
+        		and update_time=#{updateTime}
+    		</if>
+			<if test="updateBy != null and updateBy != ''">
+        		and update_by=#{updateBy}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.FmsPayOrderDO">
+        SELECT
+        <include refid="columns"/>
+		FROM fms_pay_order
+	    <include refid="where_condition"/>
+		order by create_time desc
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.FmsPayOrderDO">
+        SELECT
+        <include refid="columns"/>
+		FROM fms_pay_order
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="columns"/>
+		FROM fms_pay_order
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM fms_pay_order
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM fms_pay_order t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="orderNo != null and orderNo != ''">
+                and order_no=#{orderNo}
+            </if>
+			<if test="productName != null and productName != ''">
+                and product_name=#{productName}
+            </if>
+			<if test="description != null and description != ''">
+                and description=#{description}
+            </if>
+			<if test="outTradeNo != null and outTradeNo != ''">
+                and out_trade_no=#{outTradeNo}
+            </if>
+			<if test="transactionId != null and transactionId != ''">
+                and transaction_id=#{transactionId}
+            </if>
+			<if test="nonceStr != null and nonceStr != ''">
+                and nonce_str=#{nonceStr}
+            </if>
+			<if test="payUser != null and payUser != ''">
+                and pay_user=#{payUser}
+            </if>
+			<if test="phone != null and phone != ''">
+                and phone=#{phone}
+            </if>
+			<if test="qrCodeUrl != null and qrCodeUrl != ''">
+                and qr_code_url=#{qrCodeUrl}
+            </if>
+			<if test="payFee != null">
+                and pay_fee=#{payFee}
+            </if>
+			<if test="payType != null">
+                and pay_type=#{payType}
+            </if>
+			<if test="payStatus != null">
+                and pay_status=#{payStatus}
+            </if>
+			<if test="orderRefundStatus != null">
+                and order_refund_status=#{orderRefundStatus}
+            </if>
+			<if test="refundFee != null">
+                and refund_fee=#{refundFee}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+			<if test="updateTime != null">
+                and update_time=#{updateTime}
+            </if>
+			<if test="updateBy != null and updateBy != ''">
+                and update_by=#{updateBy}
+            </if>
+        </where>
+    </select>
+
+</mapper>

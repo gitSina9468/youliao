@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysRoleDeptDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysRoleDeptDO">
+        <result property="deptId" column="dept_id"/>
+        <result property="roleId" column="role_id"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysRoleDeptDO" useGeneratedKeys="true" keyProperty="dept_id">
+		insert into sys_role_dept(
+		    dept_id,
+		    role_id
+		)VALUES(
+			#{deptId},
+			#{roleId}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="dept_id">
+		insert into sys_role_dept(
+		   dept_id,
+		   role_id
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.deptId},
+			#{item.roleId}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="deptId != null">
+	    		dept_id= #{deptId},
+			</if>
+			<if test="roleId != null">
+	    		role_id= #{roleId},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysRoleDeptDO">
+        UPDATE sys_role_dept
+        <include refid="update_sql"/>
+        where dept_id = #{deptId}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.deptId != null">
+				dept_id= #{entity.deptId},
+	        </if>
+			<if test="entity.roleId != null">
+				role_id= #{entity.roleId},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update sys_role_dept
+            <include refid="updateInBatch_sql"/>
+			where dept_id = #{item.deptId};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysRoleDeptDO">
+		delete from sys_role_dept
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_role_dept where dept_id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		dept_id,
+		role_id
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="deptId != null">
+        		and dept_id=#{deptId}
+    		</if>
+			<if test="roleId != null">
+        		and role_id=#{roleId}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysRoleDeptDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_role_dept
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysRoleDeptDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_role_dept
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_role_dept
+	    where dept_id = #{deptId}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_role_dept
+        where dept_id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_role_dept t
+        <where>
+			<if test="deptId != null">
+                and dept_id=#{deptId}
+            </if>
+			<if test="roleId != null">
+                and role_id=#{roleId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

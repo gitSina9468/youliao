@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.EsDocSearchRecordDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.EsDocSearchRecordDO">
+        <result property="searchRecordId" column="search_record_id"/>
+        <result property="searchKeyword" column="search_keyword"/>
+        <result property="docId" column="doc_id"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+
+
+    <!-- 新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.EsDocSearchRecordDO" useGeneratedKeys="true" keyProperty="searchRecordId">
+		insert into es_doc_search_record(
+		    search_record_id,
+		    search_keyword,
+		    doc_id,
+		    user_id
+		)VALUES(
+			#{searchRecordId},
+			#{searchKeyword},
+			#{docId},
+			#{userId}
+	    )
+	</insert>
+
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="searchRecordId">
+		insert into es_doc_search_record(
+		   search_record_id,
+		   search_keyword,
+		   doc_id,
+		   user_id
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.searchRecordId},
+			#{item.searchKeyword},
+			#{item.docId},
+			#{item.userId}
+		)
+		</foreach>
+	</insert>
+
+	<sql id="update_sql">
+        <set>
+			<if test="searchRecordId != null">
+	    		search_record_id= #{searchRecordId},
+			</if>
+			<if test="searchKeyword != null">
+	    		search_keyword= #{searchKeyword},
+			</if>
+			<if test="docId != null">
+	    		doc_id= #{docId},
+			</if>
+			<if test="userId != null">
+	    		user_id= #{userId},
+			</if>
+        </set>
+    </sql>
+
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.EsDocSearchRecordDO">
+        UPDATE es_doc_search_record
+        <include refid="update_sql"/>
+        where search_record_id = #{searchRecordId}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="item.searchRecordId != null">
+				search_record_id= #{item.searchRecordId},
+	        </if>
+			<if test="item.searchKeyword != null">
+				search_keyword= #{item.searchKeyword},
+	        </if>
+			<if test="item.docId != null">
+				doc_id= #{item.docId},
+	        </if>
+			<if test="item.userId != null">
+				user_id= #{item.userId},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item">
+			update es_doc_search_record
+            <include refid="updateInBatch_sql"/>
+			where search_record_id = #{item.searchRecordId};
+		</foreach>
+    </update>
+
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.EsDocSearchRecordDO">
+		delete from es_doc_search_record
+		<include refid="where_condition"/>
+	</delete>
+
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from es_doc_search_record where search_record_id in
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="columns">
+		search_record_id,
+		search_keyword,
+		doc_id,
+		user_id
+	</sql>
+
+	<sql id="where_condition">
+        <where>
+			<if test="searchRecordId != null">
+        		and search_record_id=#{searchRecordId}
+    		</if>
+			<if test="searchKeyword != null and searchKeyword != ''">
+        		and search_keyword=#{searchKeyword}
+    		</if>
+			<if test="docId != null">
+        		and doc_id=#{docId}
+    		</if>
+			<if test="userId != null">
+        		and user_id=#{userId}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.EsDocSearchRecordDO">
+        SELECT
+        <include refid="columns"/>
+		FROM es_doc_search_record
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.EsDocSearchRecordDO">
+        SELECT
+        <include refid="columns"/>
+		FROM es_doc_search_record
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM es_doc_search_record
+	    where search_record_id = #{searchRecordId}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM es_doc_search_record
+        where search_record_id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM es_doc_search_record t
+        <where>
+			<if test="searchRecordId != null">
+                and search_record_id=#{searchRecordId}
+            </if>
+			<if test="searchKeyword != null and searchKeyword != ''">
+                and search_keyword=#{searchKeyword}
+            </if>
+			<if test="docId != null">
+                and doc_id=#{docId}
+            </if>
+			<if test="userId != null">
+                and user_id=#{userId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

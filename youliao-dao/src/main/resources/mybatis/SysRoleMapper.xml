@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysRoleDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysRoleDO">
+        <result property="id" column="id"/>
+        <result property="roleCode" column="role_code"/>
+        <result property="roleName" column="role_name"/>
+        <result property="permission" column="permission"/>
+        <result property="level" column="level"/>
+        <result property="dataScope" column="data_scope"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysRoleDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role(
+		    id,
+		    role_code,
+		    role_name,
+		    permission,
+		    level,
+		    data_scope,
+		    create_by,
+		    create_time,
+		    remark
+		)VALUES(
+			#{id},
+			#{roleCode},
+			#{roleName},
+			#{permission},
+			#{level},
+			#{dataScope},
+			#{createBy},
+			#{createTime},
+			#{remark}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role(
+		   id,
+		   role_code,
+		   role_name,
+		   permission,
+		   level,
+		   data_scope,
+		   create_by,
+		   create_time,
+		   remark
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.roleCode},
+			#{item.roleName},
+			#{item.permission},
+			#{item.level},
+			#{item.dataScope},
+			#{item.createBy},
+			#{item.createTime},
+			#{item.remark}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="roleCode != null">
+	    		role_code= #{roleCode},
+			</if>
+			<if test="roleName != null">
+	    		role_name= #{roleName},
+			</if>
+			<if test="permission != null">
+	    		permission= #{permission},
+			</if>
+			<if test="level != null">
+	    		level= #{level},
+			</if>
+			<if test="dataScope != null">
+	    		data_scope= #{dataScope},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="remark != null">
+	    		remark= #{remark},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysRoleDO">
+        UPDATE sys_role
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.roleCode != null">
+				role_code= #{entity.roleCode},
+	        </if>
+			<if test="entity.roleName != null">
+				role_name= #{entity.roleName},
+	        </if>
+			<if test="entity.permission != null">
+				permission= #{entity.permission},
+	        </if>
+			<if test="entity.level != null">
+				level= #{entity.level},
+	        </if>
+			<if test="entity.dataScope != null">
+				data_scope= #{entity.dataScope},
+	        </if>
+			<if test="entity.createBy != null">
+				create_by= #{entity.createBy},
+	        </if>
+			<if test="entity.createTime != null">
+				create_time= #{entity.createTime},
+	        </if>
+			<if test="entity.remark != null">
+				remark= #{entity.remark},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update sys_role
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysRoleDO">
+		delete from sys_role
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_role where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		role_code,
+		role_name,
+		permission,
+		level,
+		data_scope,
+		create_by,
+		create_time,
+		remark
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="roleCode != null and roleCode != ''">
+        		and role_code=#{roleCode}
+    		</if>
+			<if test="roleName != null and roleName != ''">
+        		and role_name=#{roleName}
+    		</if>
+			<if test="permission != null and permission != ''">
+        		and permission=#{permission}
+    		</if>
+			<if test="level != null">
+        		and level=#{level}
+    		</if>
+			<if test="dataScope != null and dataScope != ''">
+        		and data_scope=#{dataScope}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="remark != null and remark != ''">
+        		and remark=#{remark}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysRoleDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_role
+	    <include refid="where_condition"/>
+		order by create_time desc
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysRoleDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_role
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_role
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_role
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_role t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="roleCode != null and roleCode != ''">
+                and role_code=#{roleCode}
+            </if>
+			<if test="roleName != null and roleName != ''">
+                and role_name=#{roleName}
+            </if>
+			<if test="permission != null and permission != ''">
+                and permission=#{permission}
+            </if>
+			<if test="level != null">
+                and level=#{level}
+            </if>
+			<if test="dataScope != null and dataScope != ''">
+                and data_scope=#{dataScope}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="remark != null and remark != ''">
+                and remark=#{remark}
+            </if>
+        </where>
+    </select>
+
+</mapper>

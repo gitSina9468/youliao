@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.EsShareDocDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.EsShareDocDO">
+        <result property="shareId" column="share_id"/>
+        <result property="shareTo" column="share_to"/>
+        <result property="shareDate" column="share_date"/>
+        <result property="docId" column="doc_id"/>
+        <result property="validTime" column="valid_time"/>
+    </resultMap>
+
+
+    <!-- 新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.EsShareDocDO" useGeneratedKeys="true" keyProperty="shareId">
+		insert into es_share_doc(
+		    share_id,
+		    share_to,
+		    share_date,
+		    doc_id,
+		    valid_time
+		)VALUES(
+			#{shareId},
+			#{shareTo},
+			#{shareDate},
+			#{docId},
+			#{validTime}
+	    )
+	</insert>
+
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="shareId">
+		insert into es_share_doc(
+		   share_id,
+		   share_to,
+		   share_date,
+		   doc_id,
+		   valid_time
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.shareId},
+			#{item.shareTo},
+			#{item.shareDate},
+			#{item.docId},
+			#{item.validTime}
+		)
+		</foreach>
+	</insert>
+
+	<sql id="update_sql">
+        <set>
+			<if test="shareId != null">
+	    		share_id= #{shareId},
+			</if>
+			<if test="shareTo != null">
+	    		share_to= #{shareTo},
+			</if>
+			<if test="shareDate != null">
+	    		share_date= #{shareDate},
+			</if>
+			<if test="docId != null">
+	    		doc_id= #{docId},
+			</if>
+			<if test="validTime != null">
+	    		valid_time= #{validTime},
+			</if>
+        </set>
+    </sql>
+
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.EsShareDocDO">
+        UPDATE es_share_doc
+        <include refid="update_sql"/>
+        where share_id = #{shareId}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="item.shareId != null">
+				share_id= #{item.shareId},
+	        </if>
+			<if test="item.shareTo != null">
+				share_to= #{item.shareTo},
+	        </if>
+			<if test="item.shareDate != null">
+				share_date= #{item.shareDate},
+	        </if>
+			<if test="item.docId != null">
+				doc_id= #{item.docId},
+	        </if>
+			<if test="item.validTime != null">
+				valid_time= #{item.validTime},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item">
+			update es_share_doc
+            <include refid="updateInBatch_sql"/>
+			where share_id = #{item.shareId};
+		</foreach>
+    </update>
+
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.EsShareDocDO">
+		delete from es_share_doc
+		<include refid="where_condition"/>
+	</delete>
+
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from es_share_doc where share_id in
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="columns">
+		share_id,
+		share_to,
+		share_date,
+		doc_id,
+		valid_time
+	</sql>
+
+	<sql id="where_condition">
+        <where>
+			<if test="shareId != null">
+        		and share_id=#{shareId}
+    		</if>
+			<if test="shareTo != null">
+        		and share_to=#{shareTo}
+    		</if>
+			<if test="shareDate != null">
+        		and share_date=#{shareDate}
+    		</if>
+			<if test="docId != null">
+        		and doc_id=#{docId}
+    		</if>
+			<if test="validTime != null">
+        		and valid_time=#{validTime}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.EsShareDocDO">
+        SELECT
+        <include refid="columns"/>
+		FROM es_share_doc
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.EsShareDocDO">
+        SELECT
+        <include refid="columns"/>
+		FROM es_share_doc
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM es_share_doc
+	    where share_id = #{shareId}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM es_share_doc
+        where share_id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM es_share_doc t
+        <where>
+			<if test="shareId != null">
+                and share_id=#{shareId}
+            </if>
+			<if test="shareTo != null">
+                and share_to=#{shareTo}
+            </if>
+			<if test="shareDate != null">
+                and share_date=#{shareDate}
+            </if>
+			<if test="docId != null">
+                and doc_id=#{docId}
+            </if>
+			<if test="validTime != null">
+                and valid_time=#{validTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

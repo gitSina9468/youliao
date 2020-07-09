@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.FmsRefundOrderDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.FmsRefundOrderDO">
+        <result property="id" column="id"/>
+        <result property="payId" column="pay_id"/>
+        <result property="outRefundNo" column="out_refund_no"/>
+        <result property="refundFee" column="refund_fee"/>
+        <result property="refundStatus" column="refund_status"/>
+        <result property="refundUser" column="refund_user"/>
+        <result property="refundReason" column="refund_reason"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.FmsRefundOrderDO" useGeneratedKeys="true" keyProperty="id">
+		insert into fms_refund_order(
+		    id,
+		    pay_id,
+		    out_refund_no,
+		    refund_fee,
+		    refund_status,
+		    refund_user,
+		    refund_reason,
+		    create_time,
+		    create_by
+		)VALUES(
+			#{id},
+			#{payId},
+			#{outRefundNo},
+			#{refundFee},
+			#{refundStatus},
+			#{refundUser},
+			#{refundReason},
+			#{createTime},
+			#{createBy}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into fms_refund_order(
+		   id,
+		   pay_id,
+		   out_refund_no,
+		   refund_fee,
+		   refund_status,
+		   refund_user,
+		   refund_reason,
+		   create_time,
+		   create_by
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.payId},
+			#{item.outRefundNo},
+			#{item.refundFee},
+			#{item.refundStatus},
+			#{item.refundUser},
+			#{item.refundReason},
+			#{item.createTime},
+			#{item.createBy}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="payId != null">
+	    		pay_id= #{payId},
+			</if>
+			<if test="outRefundNo != null">
+	    		out_refund_no= #{outRefundNo},
+			</if>
+			<if test="refundFee != null">
+	    		refund_fee= #{refundFee},
+			</if>
+			<if test="refundStatus != null">
+	    		refund_status= #{refundStatus},
+			</if>
+			<if test="refundUser != null">
+	    		refund_user= #{refundUser},
+			</if>
+			<if test="refundReason != null">
+	    		refund_reason= #{refundReason},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.FmsRefundOrderDO">
+        UPDATE fms_refund_order
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.payId != null">
+				pay_id= #{entity.payId},
+	        </if>
+			<if test="entity.outRefundNo != null">
+				out_refund_no= #{entity.outRefundNo},
+	        </if>
+			<if test="entity.refundFee != null">
+				refund_fee= #{entity.refundFee},
+	        </if>
+			<if test="entity.refundStatus != null">
+				refund_status= #{entity.refundStatus},
+	        </if>
+			<if test="entity.refundUser != null">
+				refund_user= #{entity.refundUser},
+	        </if>
+			<if test="entity.refundReason != null">
+				refund_reason= #{entity.refundReason},
+	        </if>
+			<if test="entity.createTime != null">
+				create_time= #{entity.createTime},
+	        </if>
+			<if test="entity.createBy != null">
+				create_by= #{entity.createBy},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update fms_refund_order
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.FmsRefundOrderDO">
+		delete from fms_refund_order
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from fms_refund_order where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		pay_id,
+		out_refund_no,
+		refund_fee,
+		refund_status,
+		refund_user,
+		refund_reason,
+		create_time,
+		create_by
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="payId != null and payId != ''">
+        		and pay_id=#{payId}
+    		</if>
+			<if test="outRefundNo != null and outRefundNo != ''">
+        		and out_refund_no=#{outRefundNo}
+    		</if>
+			<if test="refundFee != null">
+        		and refund_fee=#{refundFee}
+    		</if>
+			<if test="refundStatus != null">
+        		and refund_status=#{refundStatus}
+    		</if>
+			<if test="refundUser != null and refundUser != ''">
+        		and refund_user=#{refundUser}
+    		</if>
+			<if test="refundReason != null and refundReason != ''">
+        		and refund_reason=#{refundReason}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.FmsRefundOrderDO">
+        SELECT
+        <include refid="columns"/>
+		FROM fms_refund_order
+	    <include refid="where_condition"/>
+		order by create_time desc
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.FmsRefundOrderDO">
+        SELECT
+        <include refid="columns"/>
+		FROM fms_refund_order
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="columns"/>
+		FROM fms_refund_order
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM fms_refund_order
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM fms_refund_order t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="payId != null and payId != ''">
+                and pay_id=#{payId}
+            </if>
+			<if test="outRefundNo != null and outRefundNo != ''">
+                and out_refund_no=#{outRefundNo}
+            </if>
+			<if test="refundFee != null">
+                and refund_fee=#{refundFee}
+            </if>
+			<if test="refundStatus != null">
+                and refund_status=#{refundStatus}
+            </if>
+			<if test="refundUser != null and refundUser != ''">
+                and refund_user=#{refundUser}
+            </if>
+			<if test="refundReason != null and refundReason != ''">
+                and refund_reason=#{refundReason}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+        </where>
+    </select>
+
+</mapper>

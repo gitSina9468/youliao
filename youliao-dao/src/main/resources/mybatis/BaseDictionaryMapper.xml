@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.BaseDictionaryDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.BaseDictionaryDO">
+        <result property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="typeCode" column="type_code"/>
+        <result property="typeName" column="type_name"/>
+        <result property="deleted" column="deleted"/>
+        <result property="status" column="status"/>
+        <result property="systemStatus" column="system_status"/>
+        <result property="sort" column="sort"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.BaseDictionaryDO" useGeneratedKeys="true" keyProperty="id">
+		insert into base_dictionary(
+		    id,
+		    code,
+		    name,
+		    type_code,
+		    type_name,
+		    deleted,
+		    status,
+		    system_status,
+		    sort,
+		    create_time,
+		    update_time,
+		    create_by,
+		    update_by
+		)VALUES(
+			#{id},
+			#{code},
+			#{name},
+			#{typeCode},
+			#{typeName},
+			#{deleted},
+			#{status},
+			#{systemStatus},
+			#{sort},
+			#{createTime},
+			#{updateTime},
+			#{createBy},
+			#{updateBy}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into base_dictionary(
+		   id,
+		   code,
+		   name,
+		   type_code,
+		   type_name,
+		   deleted,
+		   status,
+		   system_status,
+		   sort,
+		   create_time,
+		   update_time,
+		   create_by,
+		   update_by
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.code},
+			#{item.name},
+			#{item.typeCode},
+			#{item.typeName},
+			#{item.deleted},
+			#{item.status},
+			#{item.systemStatus},
+			#{item.sort},
+			#{item.createTime},
+			#{item.updateTime},
+			#{item.createBy},
+			#{item.updateBy}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="code != null">
+	    		code= #{code},
+			</if>
+			<if test="name != null">
+	    		name= #{name},
+			</if>
+			<if test="typeCode != null">
+	    		type_code= #{typeCode},
+			</if>
+			<if test="typeName != null">
+	    		type_name= #{typeName},
+			</if>
+			<if test="deleted != null">
+	    		deleted= #{deleted},
+			</if>
+			<if test="status != null">
+	    		status= #{status},
+			</if>
+			<if test="systemStatus != null">
+				system_status= #{systemStatus},
+			</if>
+			<if test="sort != null">
+	    		sort= #{sort},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="updateTime != null">
+	    		update_time= #{updateTime},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+			<if test="updateBy != null">
+	    		update_by= #{updateBy},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.BaseDictionaryDO">
+        UPDATE base_dictionary
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.code != null">
+				code= #{entity.code},
+	        </if>
+			<if test="entity.name != null">
+				name= #{entity.name},
+	        </if>
+			<if test="entity.typeCode != null">
+				type_code= #{entity.typeCode},
+	        </if>
+			<if test="entity.typeName != null">
+				type_name= #{entity.typeName},
+	        </if>
+			<if test="entity.deleted != null">
+				deleted= #{entity.deleted},
+	        </if>
+			<if test="entity.status != null">
+				status= #{entity.status},
+	        </if>
+			<if test="entity.systemStatus != null">
+				system_status= #{entity.systemStatus},
+	        </if>
+			<if test="entity.sort != null">
+				sort= #{entity.sort},
+	        </if>
+			<if test="entity.createTime != null">
+				create_time= #{entity.createTime},
+	        </if>
+			<if test="entity.updateTime != null">
+				update_time= #{entity.updateTime},
+	        </if>
+			<if test="entity.createBy != null">
+				create_by= #{entity.createBy},
+	        </if>
+			<if test="entity.updateBy != null">
+				update_by= #{entity.updateBy},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update base_dictionary
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.BaseDictionaryDO">
+		delete from base_dictionary
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from base_dictionary where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		code,
+		name,
+		type_code,
+		type_name,
+		deleted,
+		status,
+		system_status,
+		sort,
+		create_time,
+		update_time,
+		create_by,
+		update_by
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null and id != ''">
+        		and id=#{id}
+    		</if>
+			<if test="code != null and code != ''">
+        		and code=#{code}
+    		</if>
+			<if test="name != null and name != ''">
+        		and name like concat("%",#{name},"%")
+    		</if>
+			<if test="typeCode != null and typeCode != ''">
+        		and type_code like concat("%",#{typeCode},"%")
+    		</if>
+			<if test="typeName != null and typeName != ''">
+        		and type_name like concat("%",#{typeName},"%")
+    		</if>
+			<if test="deleted != null">
+        		and deleted=#{deleted}
+    		</if>
+			<if test="status != null">
+        		and status=#{status}
+    		</if>
+			<if test="systemStatus != null">
+        		and system_status=#{systemStatus}
+    		</if>
+			<if test="sort != null">
+        		and sort=#{sort}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="updateTime != null">
+        		and update_time=#{updateTime}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+			<if test="updateBy != null and updateBy != ''">
+        		and update_by=#{updateBy}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.BaseDictionaryDO">
+        SELECT
+        <include refid="columns"/>
+		FROM base_dictionary
+	    <include refid="where_condition"/>
+		order by create_time desc
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.BaseDictionaryDO">
+        SELECT
+        <include refid="columns"/>
+		FROM base_dictionary
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="columns"/>
+		FROM base_dictionary
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM base_dictionary
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM base_dictionary t
+        <where>
+			<if test="id != null and id != ''">
+                and id=#{id}
+            </if>
+			<if test="code != null and code != ''">
+                and code=#{code}
+            </if>
+			<if test="name != null and name != ''">
+                and name=#{name}
+            </if>
+			<if test="typeCode != null and typeCode != ''">
+                and type_code=#{typeCode}
+            </if>
+			<if test="typeName != null and typeName != ''">
+                and type_name=#{typeName}
+            </if>
+			<if test="deleted != null">
+                and deleted=#{deleted}
+            </if>
+			<if test="status != null">
+                and status=#{status}
+            </if>
+			<if test="systemStatus != null">
+                and system_status=#{systemStatus}
+            </if>
+			<if test="sort != null">
+                and sort=#{sort}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="updateTime != null">
+                and update_time=#{updateTime}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+			<if test="updateBy != null and updateBy != ''">
+                and update_by=#{updateBy}
+            </if>
+        </where>
+    </select>
+
+</mapper>

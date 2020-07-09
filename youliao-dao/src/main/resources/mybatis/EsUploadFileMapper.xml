@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.EsUploadFileDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.EsUploadFileDO">
+        <result property="fileId" column="file_id"/>
+        <result property="filePath" column="file_path"/>
+        <result property="sha256" column="sha256"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="fileType" column="file_type"/>
+        <result property="fileDesc" column="file_desc"/>
+        <result property="fileName" column="file_name"/>
+        <result property="originalFileName" column="original_file_name"/>
+    </resultMap>
+
+
+    <!-- 新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.EsUploadFileDO" useGeneratedKeys="true" keyProperty="fileId">
+		insert into es_upload_file(
+		    file_id,
+		    file_path,
+		    sha256,
+		    file_size,
+		    file_type,
+		    file_desc,
+		    file_name,
+		    original_file_name
+		)VALUES(
+			#{fileId},
+			#{filePath},
+			#{sha256},
+			#{fileSize},
+			#{fileType},
+			#{fileDesc},
+			#{fileName},
+			#{originalFileName}
+	    )
+	</insert>
+
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="fileId">
+		insert into es_upload_file(
+		   file_id,
+		   file_path,
+		   sha256,
+		   file_size,
+		   file_type,
+		   file_desc,
+		   file_name,
+		   original_file_name
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.fileId},
+			#{item.filePath},
+			#{item.sha256},
+			#{item.fileSize},
+			#{item.fileType},
+			#{item.fileDesc},
+			#{item.fileName},
+			#{item.originalFileName}
+		)
+		</foreach>
+	</insert>
+
+	<sql id="update_sql">
+        <set>
+			<if test="fileId != null">
+	    		file_id= #{fileId},
+			</if>
+			<if test="filePath != null">
+	    		file_path= #{filePath},
+			</if>
+			<if test="sha256 != null">
+	    		sha256= #{sha256},
+			</if>
+			<if test="fileSize != null">
+	    		file_size= #{fileSize},
+			</if>
+			<if test="fileType != null">
+	    		file_type= #{fileType},
+			</if>
+			<if test="fileDesc != null">
+	    		file_desc= #{fileDesc},
+			</if>
+			<if test="fileName != null">
+	    		file_name= #{fileName},
+			</if>
+			<if test="originalFileName != null">
+	    		original_file_name= #{originalFileName},
+			</if>
+        </set>
+    </sql>
+
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.EsUploadFileDO">
+        UPDATE es_upload_file
+        <include refid="update_sql"/>
+        where file_id = #{fileId}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="item.fileId != null">
+				file_id= #{item.fileId},
+	        </if>
+			<if test="item.filePath != null">
+				file_path= #{item.filePath},
+	        </if>
+			<if test="item.sha256 != null">
+				sha256= #{item.sha256},
+	        </if>
+			<if test="item.fileSize != null">
+				file_size= #{item.fileSize},
+	        </if>
+			<if test="item.fileType != null">
+				file_type= #{item.fileType},
+	        </if>
+			<if test="item.fileDesc != null">
+				file_desc= #{item.fileDesc},
+	        </if>
+			<if test="item.fileName != null">
+				file_name= #{item.fileName},
+	        </if>
+			<if test="item.originalFileName != null">
+				original_file_name= #{item.originalFileName},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item">
+			update es_upload_file
+            <include refid="updateInBatch_sql"/>
+			where file_id = #{item.fileId};
+		</foreach>
+    </update>
+
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.EsUploadFileDO">
+		delete from es_upload_file
+		<include refid="where_condition"/>
+	</delete>
+
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from es_upload_file where file_id in
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<sql id="columns">
+		file_id,
+		file_path,
+		sha256,
+		file_size,
+		file_type,
+		file_desc,
+		file_name,
+		original_file_name
+	</sql>
+
+	<sql id="where_condition">
+        <where>
+			<if test="fileId != null and fileId != ''">
+        		and file_id=#{fileId}
+    		</if>
+			<if test="filePath != null and filePath != ''">
+        		and file_path=#{filePath}
+    		</if>
+			<if test="sha256 != null and sha256 != ''">
+        		and sha256=#{sha256}
+    		</if>
+			<if test="fileSize != null">
+        		and file_size=#{fileSize}
+    		</if>
+			<if test="fileType != null and fileType != ''">
+        		and file_type=#{fileType}
+    		</if>
+			<if test="fileDesc != null and fileDesc != ''">
+        		and file_desc=#{fileDesc}
+    		</if>
+			<if test="fileName != null and fileName != ''">
+        		and file_name=#{fileName}
+    		</if>
+			<if test="originalFileName != null and originalFileName != ''">
+        		and original_file_name=#{originalFileName}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.EsUploadFileDO">
+        SELECT
+        <include refid="columns"/>
+		FROM es_upload_file
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.EsUploadFileDO">
+        SELECT
+        <include refid="columns"/>
+		FROM es_upload_file
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="columns"/>
+		FROM es_upload_file
+	    where file_id = #{fileId}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM es_upload_file
+        where file_id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM es_upload_file t
+        <where>
+			<if test="fileId != null and fileId != ''">
+                and file_id=#{fileId}
+            </if>
+			<if test="filePath != null and filePath != ''">
+                and file_path=#{filePath}
+            </if>
+			<if test="sha256 != null and sha256 != ''">
+                and sha256=#{sha256}
+            </if>
+			<if test="fileSize != null">
+                and file_size=#{fileSize}
+            </if>
+			<if test="fileType != null and fileType != ''">
+                and file_type=#{fileType}
+            </if>
+			<if test="fileDesc != null and fileDesc != ''">
+                and file_desc=#{fileDesc}
+            </if>
+			<if test="fileName != null and fileName != ''">
+                and file_name=#{fileName}
+            </if>
+			<if test="originalFileName != null and originalFileName != ''">
+                and original_file_name=#{originalFileName}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysJobDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysJobDO">
+        <result property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="job" column="job"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="enabled" column="enabled"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysJobDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_job(
+		    id,
+		    code,
+		    job,
+		    dept_id,
+		    enabled,
+		    create_by,
+		    create_time,
+		    remark
+		)VALUES(
+			#{id},
+			#{code},
+			#{job},
+			#{deptId},
+			#{enabled},
+			#{createBy},
+			#{createTime},
+			#{remark}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_job(
+		   id,
+		   code,
+		   job,
+		   dept_id,
+		   enabled,
+		   create_by,
+		   create_time,
+		   remark
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.id},
+			#{item.code},
+			#{item.job},
+			#{item.deptId},
+			#{item.enabled},
+			#{item.createBy},
+			#{item.createTime},
+			#{item.remark}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="code != null">
+	    		code= #{code},
+			</if>
+			<if test="job != null">
+	    		job= #{job},
+			</if>
+			<if test="deptId != null">
+	    		dept_id= #{deptId},
+			</if>
+			<if test="enabled != null">
+	    		enabled= #{enabled},
+			</if>
+			<if test="createBy != null">
+	    		create_by= #{createBy},
+			</if>
+			<if test="createTime != null">
+	    		create_time= #{createTime},
+			</if>
+			<if test="remark != null">
+	    		remark= #{remark},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysJobDO">
+        UPDATE sys_job
+        <include refid="update_sql"/>
+        where id = #{id}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.code != null">
+				code= #{entity.code},
+	        </if>
+			<if test="entity.job != null">
+				job= #{entity.job},
+	        </if>
+			<if test="entity.deptId != null">
+				dept_id= #{entity.deptId},
+	        </if>
+			<if test="entity.enabled != null">
+				enabled= #{entity.enabled},
+	        </if>
+			<if test="entity.createBy != null">
+				create_by= #{entity.createBy},
+	        </if>
+			<if test="entity.createTime != null">
+				create_time= #{entity.createTime},
+	        </if>
+			<if test="entity.remark != null">
+				remark= #{entity.remark},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update sys_job
+            <include refid="updateInBatch_sql"/>
+			where id = #{item.id};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysJobDO">
+		delete from sys_job
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_job where id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		id,
+		code,
+		job,
+		dept_id,
+		enabled,
+		create_by,
+		create_time,
+		remark
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="id != null">
+        		and id=#{id}
+    		</if>
+			<if test="code != null and code != ''">
+        		and code=#{code}
+    		</if>
+			<if test="job != null and job != ''">
+        		and job=#{job}
+    		</if>
+			<if test="deptId != null">
+        		and dept_id=#{deptId}
+    		</if>
+			<if test="enabled != null">
+        		and enabled=#{enabled}
+    		</if>
+			<if test="createBy != null and createBy != ''">
+        		and create_by=#{createBy}
+    		</if>
+			<if test="createTime != null">
+        		and create_time=#{createTime}
+    		</if>
+			<if test="remark != null and remark != ''">
+        		and remark=#{remark}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysJobDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_job
+	    <include refid="where_condition"/>
+		order by create_time desc
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysJobDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_job
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_job
+	    where id = #{id}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_job
+        where id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_job t
+        <where>
+			<if test="id != null">
+                and id=#{id}
+            </if>
+			<if test="code != null and code != ''">
+                and code=#{code}
+            </if>
+			<if test="job != null and job != ''">
+                and job=#{job}
+            </if>
+			<if test="deptId != null">
+                and dept_id=#{deptId}
+            </if>
+			<if test="enabled != null">
+                and enabled=#{enabled}
+            </if>
+			<if test="createBy != null and createBy != ''">
+                and create_by=#{createBy}
+            </if>
+			<if test="createTime != null">
+                and create_time=#{createTime}
+            </if>
+			<if test="remark != null and remark != ''">
+                and remark=#{remark}
+            </if>
+        </where>
+    </select>
+
+</mapper>

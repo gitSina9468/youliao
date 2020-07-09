@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.seahorse.youliao.dao.SysRoleMenuDao">
+    <resultMap id="BaseResultMap" type="com.seahorse.youliao.dao.entity.SysRoleMenuDO">
+        <result property="menuId" column="menu_id"/>
+        <result property="roleId" column="role_id"/>
+    </resultMap>
+    
+    
+    <!-- 批量新增 主键命名为id-->
+    <insert id="insert" parameterType="com.seahorse.youliao.dao.entity.SysRoleMenuDO" useGeneratedKeys="true" keyProperty="menu_id">
+		insert into sys_role_menu(
+		    menu_id,
+		    role_id
+		)VALUES(
+			#{menuId},
+			#{roleId}
+	    )
+	</insert>
+	
+	<!-- 批量新增-->
+	<insert id="insertInBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="menu_id">
+		insert into sys_role_menu(
+		   menu_id,
+		   role_id
+		) values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.menuId},
+			#{item.roleId}
+		)
+		</foreach>
+	</insert>
+	
+	<sql id="update_sql">
+        <set>
+			<if test="menuId != null">
+	    		menu_id= #{menuId},
+			</if>
+			<if test="roleId != null">
+	    		role_id= #{roleId},
+			</if>
+        </set>
+    </sql>
+    
+    <!--通用更新(请谨慎使用, 防止全表更新) -->
+    <update id="update" parameterType="com.seahorse.youliao.dao.entity.SysRoleMenuDO">
+        UPDATE sys_role_menu
+        <include refid="update_sql"/>
+        where menu_id = #{menuId}
+    </update>
+
+    <sql id="updateInBatch_sql">
+        <set>
+			<if test="entity.menuId != null">
+				menu_id= #{entity.menuId},
+	        </if>
+			<if test="entity.roleId != null">
+				role_id= #{entity.roleId},
+	        </if>
+        </set>
+    </sql>
+
+	<update id="updateInBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			update sys_role_menu
+            <include refid="updateInBatch_sql"/>
+			where menu_id = #{item.menuId};
+		</foreach>
+    </update>
+    
+    <!--根据传入对象进行删除 慎用-->
+    <delete id="delete" parameterType="com.seahorse.youliao.dao.entity.SysRoleMenuDO">
+		delete from sys_role_menu
+		<include refid="where_condition"/>
+	</delete>
+	
+	<!-- 根据主键进行删除-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+		delete from sys_role_menu where menu_id in  
+		<foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<sql id="columns">
+		menu_id,
+		role_id
+	</sql>
+	
+	<sql id="where_condition">
+        <where>
+			<if test="menuId != null">
+        		and menu_id=#{menuId}
+    		</if>
+			<if test="roleId != null">
+        		and role_id=#{roleId}
+    		</if>
+        </where>
+    </sql>
+
+	<!--根据对象查询列表-->
+	<select id="getList" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysRoleMenuDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_role_menu
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据对象查询单个对象-->
+    <select id="get" resultMap="BaseResultMap" parameterType="com.seahorse.youliao.dao.entity.SysRoleMenuDO">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_role_menu
+	    <include refid="where_condition"/>
+    </select>
+
+    <!--根据主键查询单个对象-->
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="columns"/>
+		FROM sys_role_menu
+	    where menu_id = #{menuId}
+    </select>
+
+    <!--根据主键集合查询单个对象-->
+    <select id="getListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_role_menu
+        where menu_id in
+        <foreach collection="list" item="item" index="index"  open="(" separator="," close=")">
+			#{item}
+        </foreach>
+    </select>
+
+    <select id="getListByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM sys_role_menu t
+        <where>
+			<if test="menuId != null">
+                and menu_id=#{menuId}
+            </if>
+			<if test="roleId != null">
+                and role_id=#{roleId}
+            </if>
+        </where>
+    </select>
+
+</mapper>
