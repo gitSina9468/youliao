@@ -1,14 +1,16 @@
-<h1 style="text-align: center">YOU-LIAO 后台管理系统</h1>
+<center><h1 style="text-align: center">YOU-LIAO 后台管理系统</h1></center>
 
 #### 项目简介
 一个基于 Spring Boot 2.0.4、Mybatis、JWT、WebSocket、Spring Security、Redis、Ant Design Pro Vue的前后端分离的后台管理系统。
 此处只是项目的简介，更多的技术内容使用实现方案会完善到wiki 文档，敬请期待。
 
+> **代码从码云gitee 迁移过来的** [gitee地址](https://gitee.com/sinaC/youliao)
+
 > 如果该项目对您有帮助，您可以点右上角 "Star" 支持一下 谢谢！
 
 > 或者您可以 "follow" 一下，该项目将持续更新，不断完善功能。
 
-**前端项目地址：**  [https://gitee.com/sinaC/ant-vue-youliao](https://gitee.com/sinaC/ant-vue-youliao)
+**前端项目地址：**  [https://github.com/gitSina9468/ant-vue-youliao](https://github.com/gitSina9468/ant-vue-youliao)
 
 **体验地址：**  [http://132.232.43.102](http://132.232.43.102)
 
@@ -248,4 +250,4 @@ git clone <a target="_blank" href="git clone https://gitee.com/sinaC/youliao.git
 
 如果觉得还不错，请作者喝杯咖啡吧 ☺
 
-![](https://sinac.gitee.io/blog/view/pay.png)
+![](http://youliao-seahorse.oss-cn-beijing.aliyuncs.com/jpg/20200709/pay.png)
