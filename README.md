@@ -103,36 +103,31 @@ git clone <a target="_blank" href="git clone https://gitee.com/sinaC/youliao.git
 3.  项目在中央仓库无法下载的jar(word解析相关包)  在项目/doc 目录下
 
 4.  启动后看到美女图案表示启动成功;
-![美女](https://images.gitee.com/uploads/images/2020/0408/205017_bef2a324_1182566.png)
+![美女](https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200205181725.png)
 
 ### 1.1 <a name="1.1">项目预览</a>
 
 
 <table>
     <tr>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205017_5289c83a_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205017_2abe55b9_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205017_c2f056a7_1182566.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200205165103.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200224214255.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205017_a31eb61c_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205017_b1c5bbbf_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205018_c144e369_1182566.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200205165137.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200224214823.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205018_19b9cf9c_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0606/230321_02bc0257_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0606/230321_3256731c_1182566.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200205165657.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200224214411.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0606/230321_d2e109df_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0606/230321_eb13a2ea_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0606/230321_be11e068_1182566.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200224214327.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200229122214.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0606/230321_970be245_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0606/230322_f4c14a7a_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0606/230322_71fec6cd_1182566.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200219160724.png"/></td>
+        <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200219160743.png"/></td>
     </tr>
 </table>
 
@@ -141,33 +136,34 @@ git clone <a target="_blank" href="git clone https://gitee.com/sinaC/youliao.git
 
 >1.集成阿里Druid数据库连接池，监控DB池连接和SQL的执行情况；账号 root  密码 root 可自行在项目中设置；[demo实例](doc/md/druid.md)
 
-![global](https://images.gitee.com/uploads/images/2020/0408/205019_3f9c8549_1182566.png)
+![global](https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200205165419.png)
 
 >2.集成Swagger：一个规范和完整的框架，用于生成、描述、调用和可视化 RESTful 风格的 Web 服务；[demo实例](doc/md/swagger.md)
 
-![global](https://images.gitee.com/uploads/images/2020/0408/205019_9988cd2a_1182566.png)
+![global](https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200205165504.png)
 
 >3.集成Swagger-Bootstrap-UI文档<swagger升级版 测试更方便>；启动后访问 http://localhost:8080/api/doc.html；
 
-![global](https://images.gitee.com/uploads/images/2020/0408/205019_12da1bcd_1182566.png)
+![global](https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200219153438.png)
 
 >4.webSocket 日志实时推送；启动后访问 http://localhost:8080/api/log/view
 
-![global](https://images.gitee.com/uploads/images/2020/0408/205019_a9b60e61_1182566.png)
+![global](https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200205165610.png)
 
 >5.pdf预览；启动后默认访问 http://localhost:8080/api/generic/web/viewer.html  后面跟 ?file=文件名.pdf 可访问pdf文件
 
-![global](https://images.gitee.com/uploads/images/2020/0408/205019_67351760_1182566.png)
+![global](https://youliao-1.oss-cn-beijing.aliyuncs.com/img/QQ%E5%9B%BE%E7%89%8720200205165933.png)
+
 
 ### 1.3 <a name="1.3">pdf小票预览
 <table>
     <tr>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205019_d4aa9ca2_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205019_898685e0_1182566.png"/></td>
+        <td><img src="http://tiyi.oss-cn-beijing.aliyuncs.com/test/20200102/9dac327eabf34f95897303d3b2951e05.png"/></td>
+        <td><img src="http://tiyi.oss-cn-beijing.aliyuncs.com/test/20191229/20d5d782f7c6404f8720c6c1d9d38e68.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205019_d3595696_1182566.png"/></td>
-        <td><img src="https://images.gitee.com/uploads/images/2020/0408/205020_55fd0d6e_1182566.png"/></td>
+        <td><img src="http://tiyi.oss-cn-beijing.aliyuncs.com/test/20191229/8792d0916531478ca3514eaa74a89380.png"/></td>
+        <td><img src="https://test-hong-890219.oss-cn-beijing.aliyuncs.com/QQ%E5%9B%BE%E7%89%8720191230195449.png"/></td>
     </tr>
 </table>
 
@@ -179,14 +175,14 @@ git clone <a target="_blank" href="git clone https://gitee.com/sinaC/youliao.git
 >1.基于支付案列的扫码付已经完善接入,个人已自测。更多支付类型后期再不断更新。案列预览。
 <table>
         <tr>
-            <td><img src="https://images.gitee.com/uploads/images/2020/0408/205019_cd7d4fdb_1182566.jpeg"/></td>
-            <td><img src="https://images.gitee.com/uploads/images/2020/0408/205020_d45b6603_1182566.jpeg"/></td>
-            <td><img src="https://images.gitee.com/uploads/images/2020/0408/205021_871da4c8_1182566.jpeg"/></td>
+            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_111445.jpg"/></td>
+            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_142521.jpg"/></td>
+            td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_112743.jpg"/></td>
         </tr>
         <tr>
-            <td><img src="https://images.gitee.com/uploads/images/2020/0408/205020_9e3c0e5a_1182566.jpeg"/></td>
-            <td><img src="https://images.gitee.com/uploads/images/2020/0408/205020_388b4cce_1182566.jpeg"/></td>
-            <td><img src="https://images.gitee.com/uploads/images/2020/0408/205020_b3d029d0_1182566.jpeg"/></td>
+            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_113017.jpg"/></td>
+            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_112848.jpg"/></td>
+            <td><img src="https://youliao-1.oss-cn-beijing.aliyuncs.com/img/Screenshot_20200326_112947.jpg"/></td>
         </tr>
 </table>
 
@@ -252,4 +248,4 @@ git clone <a target="_blank" href="git clone https://gitee.com/sinaC/youliao.git
 
 如果觉得还不错，请作者喝杯咖啡吧 ☺
 
-![](https://images.gitee.com/uploads/images/2020/0408/205058_80576a18_1182566.jpeg)
+![](https://sinac.gitee.io/blog/view/pay.png)
