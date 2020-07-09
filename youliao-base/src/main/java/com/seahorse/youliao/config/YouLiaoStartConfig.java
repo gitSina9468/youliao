@@ -27,36 +27,22 @@ public class YouLiaoStartConfig implements ApplicationRunner {
 
 
         //初始化 支付宝-微信参数配置参数
-        logger.info("加载微信支付配置文件wxinfo.properties-----------------");
         WeChatPayConfigs.init("wxinfo.properties");
-        logger.info("微信配置文件加载成功----------------------------------");
+        logger.info("微信配置文件wxinfo.properties加载成功----------------------------------");
 
-        logger.info("加载支付宝支付配置文件zfb.properties-----------------");
         AliPayConfigs.init("zfb.properties");
         Configs.init("zfb.properties");
-        logger.info("支付宝配置文件加载成功----------------------------------");
+        logger.info("支付宝配置文件zfb.properties加载成功----------------------------------");
 
-        //打印系统相关参数 -- 根据个人爱好打印
+        //打印系统相关参数
         logger.info("file.separator : " + System.getProperty("file.separator"));
         logger.info("line.separator : " + System.getProperty("line.separator"));
         logger.info("path.separator : " + System.getProperty("path.separator"));
 
-        logger.info("\n----------------Application 参数打印:---------------------\n\t" +
-                "java.home : " + System.getProperty("java.home") + "/\n\t" +
-                "java.class.version : " + System.getProperty("java.class.version") + "/\n\t" +
-                "java.class.path : " + System.getProperty("java.class.path") + "/\n\t" +
-                "java.library.path : " + System.getProperty("java.library.path") + "/\n\t" +
-                "java.io.tmpdir : " + System.getProperty("java.io.tmpdir") + "/\n\t" +
-                "java.compiler : " + System.getProperty("java.compiler") + "/\n\t" +
-                "java.ext.dirs : " + System.getProperty("java.ext.dirs") + "/\n\t" +
-                "user.name : " + System.getProperty("user.name") + "/\n\t" +
-                "user.home : " + System.getProperty("user.home") + "/\n\t" +
-                "user.dir : " + System.getProperty("user.dir") + "/\n" +
-                "----------------------------------------------------------");
 
         String ip = InetAddress.getLocalHost().getHostAddress();
         String port = "8080";
-        logger.info("\n----------------------------------------------------------\n\t" +
+        logger.info("\n----------------Application 参数打印:---------------------\n\t" +
                 "Application You Liao is running! Access URLs:\n\t" +
                 "Local: \t\thttp://localhost:" + port + "/api/\n\t" +
                 "External: \thttp://" + ip + ":" + port + "/api/\n\t" +
